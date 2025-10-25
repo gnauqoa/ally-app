@@ -9,9 +9,13 @@
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev-a": "ionic cap run android -l --host 0.0.0.0",
+    "sync-a": "ionic cap sync android",
+    "run-a": "ionic cap run android"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
     "@capacitor/app": "7.1.0",
     "@capacitor/core": "7.4.3",
     "@capacitor/haptics": "7.0.2",
@@ -34,6 +38,7 @@
     "react-dom": "19.0.0",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
+    "react-use": "^17.6.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.14"
   },
