@@ -1,21 +1,8 @@
-import {
-  IonButtons,
-  IonHeader,
-  IonMenuButton,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import TabTitle from "@/components/tab-title";
+import { useAppSelector } from "@/redux/hooks";
 
-export default function QuizHeader() {
-  return (
-    <IonHeader>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonMenuButton />
-        </IonButtons>
-        <IonTitle>Quiz</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-  );
+export default function QuizTaskHeader() {
+  const { currentQuiz } = useAppSelector((state) => state.quiz);
+  if (!currentQuiz) return <></>;
+  return <TabTitle title={currentQuiz.code} />;
 }
-

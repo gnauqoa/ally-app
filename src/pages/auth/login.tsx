@@ -1,51 +1,68 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { login } from "@/lib/auth-storage";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { LogIn, UserPlus } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { loginThunk, clearError } from "@/redux/slices/auth";
+import { useIonRouter } from "@ionic/react";
+import PageContainer from "@/components/page-container";
+import { ROUTE_PATHS } from "@/lib/constant";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
-  const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useIonRouter();
+  const dispatch = useAppDispatch();
+  const { isLoading, error: reduxError } = useAppSelector(
+    (state) => state.auth
+  );
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "user@example.com",
+      password: "password123",
+    },
+  });
 
-    if (!email.trim() || !password.trim()) {
-      setError("Please enter both email and password");
-      return;
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  const onSubmit = async (values: LoginFormValues) => {
+    dispatch(clearError());
+    try {
+      await dispatch(loginThunk(values)).unwrap();
+    } catch (err: any) {
+      console.error("Login failed:", err);
     }
-
-    setIsLoading(true);
-
-    // Simulate API call delay
-    setTimeout(() => {
-      const user = login(email, password);
-
-      if (user) {
-        history.push("/chat");
-      } else {
-        setError("Invalid email or password");
-      }
-
-      setIsLoading(false);
-    }, 500);
   };
 
   const handleRegisterClick = () => {
-    history.push("/register");
+    router.push(ROUTE_PATHS.REGISTER, "root");
   };
 
   return (
-    <div className="flex h-full items-center justify-center bg-background p-4 sm:p-6">
-      <Card className="w-full max-w-md p-6 sm:p-8 flex overflow-y-auto h-full">
-        <div className="mb-8 text-center">
+    <PageContainer className="flex items-center justify-center">
+      <Card className="w-full max-w-md p-6 sm:p-8 flex overflow-y-auto">
+        <div className="text-center">
           <h1 className="text-2xl sm:text-3xl font-bold mb-2">
             Welcome to Ally
           </h1>
@@ -54,49 +71,67 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full h-12 text-base"
-              disabled={isLoading}
-              autoComplete="email"
-              autoCapitalize="none"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      className="w-full h-12 text-base"
+                      disabled={isLoading}
+                      autoComplete="email"
+                      autoCapitalize="none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full h-12 text-base"
-              disabled={isLoading}
-              autoComplete="current-password"
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Enter your password"
+                      className="w-full h-12 text-base"
+                      disabled={isLoading}
+                      autoComplete="current-password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          {error && (
-            <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950 p-3 rounded-lg">
-              {error}
-            </div>
-          )}
+            {reduxError && (
+              <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950 p-3 rounded-lg">
+                {reduxError}
+              </div>
+            )}
 
-          <Button
-            type="submit"
-            className="w-full gap-2 h-12 text-base font-medium"
-            disabled={isLoading}
-          >
-            <LogIn className="h-5 w-5" />
-            {isLoading ? "Signing in..." : "Sign In"}
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              className="w-full gap-2 h-12 text-base font-medium"
+              disabled={isLoading}
+            >
+              <LogIn className="h-5 w-5" />
+              {isLoading ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
+        </Form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground mb-3">
@@ -113,6 +148,6 @@ export default function LoginPage() {
           </Button>
         </div>
       </Card>
-    </div>
+    </PageContainer>
   );
 }

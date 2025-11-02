@@ -1,62 +1,53 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Trash2, BookOpen, Plus } from "lucide-react";
-import { deleteQuiz, getQuizzes, Quiz } from "@/lib/quiz-storage";
+import { useEffect } from "react";
+import { useIonRouter } from "@ionic/react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { fetchQuizzes, clearError } from "@/redux/slices/quiz";
+import { AlertCircle } from "lucide-react";
+import { GET_ROUTE_PATHS } from "@/lib/constant";
 
 export default function QuizPage() {
-  const history = useHistory();
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useIonRouter();
+  const dispatch = useAppDispatch();
+  const { quizzes, isLoading, error } = useAppSelector((state) => state.quiz);
+  useEffect(() => {
+    dispatch(fetchQuizzes({ page: 1, limit: 50 }));
+  }, [dispatch]);
 
   useEffect(() => {
-    setIsLoading(true);
-    const loadedQuizzes = getQuizzes();
-    setQuizzes(
-      loadedQuizzes.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      )
-    );
-    setIsLoading(false);
-  }, []);
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
 
-  const handleDelete = (id: string) => {
-    deleteQuiz(id);
-    setQuizzes(quizzes.filter((q) => q.id !== id));
-  };
-
-  const handleQuizClick = (quizId: string) => {
-    history.push(`/quiz/take/${quizId}`);
-  };
-
-  const handleCreateQuiz = () => {
-    history.push("/quiz/create");
+  const handleQuizClick = (quizId: number) => {
+    router.push(GET_ROUTE_PATHS.QUIZ_TAKE(quizId), "root");
   };
 
   return (
     <div className="flex h-full flex-col bg-background">
-      <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+      <div className="flex-1 py-6 sm:px-6">
         <div className="w-full">
-          <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Quizzes</h1>
-            <Button onClick={handleCreateQuiz} className="gap-2">
-              <Plus className="h-4 w-4" />
-              Create Quiz
-            </Button>
-          </div>
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 dark:bg-red-950 p-4 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-600 dark:text-red-400">
+                  Error loading quizzes
+                </p>
+                <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                  {error}
+                </p>
+              </div>
+            </div>
+          )}
 
           {isLoading ? (
-            <div className="text-center text-muted-foreground">Loading...</div>
+            <div className="text-center text-muted-foreground py-8">
+              Loading tests...
+            </div>
           ) : quizzes.length === 0 ? (
-            <div
-              className="w-full rounded-lg border border-border bg-card p-8 text-center cursor-pointer"
-              onClick={handleCreateQuiz}
-            >
-              <BookOpen className="mx-auto h-12 w-12 text-muted-foreground/50" />
-              <p className="mt-4 text-muted-foreground">
-                No quizzes yet. Create your first quiz!
-              </p>
+            <div className="text-center text-muted-foreground py-8">
+              No tests yet.
             </div>
           ) : (
             <div className="space-y-3">
@@ -67,27 +58,26 @@ export default function QuizPage() {
                   onClick={() => handleQuizClick(quiz.id)}
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground truncate text-2xl">
-                      {quiz.title}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {quiz.description}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {quiz.questions.length} questions •{" "}
-                      {new Date(quiz.updatedAt).toLocaleDateString()}
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-medium text-foreground truncate text-2xl flex-1 min-w-0">
+                        {quiz.name}
+                      </p>
+                      <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary whitespace-nowrap flex-shrink-0">
+                        {quiz.category}
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-row min-w-0">
+                      <div className="flex-1 flex-row">
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {quiz.description}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {quiz.code} • {quiz.totalQuestions} questions •{" "}
+                          {new Date(quiz.updatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(quiz.id);
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
                 </div>
               ))}
             </div>
@@ -97,4 +87,3 @@ export default function QuizPage() {
     </div>
   );
 }
-

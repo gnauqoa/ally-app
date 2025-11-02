@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { register } from "@/lib/auth-storage";
 import { UserPlus, ArrowLeft } from "lucide-react";
 
 export default function RegisterPage() {
@@ -37,17 +36,17 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     // Simulate API call delay
-    setTimeout(() => {
-      const user = register(email, password, name);
+    // setTimeout(() => {
+    //   const user = register(email, password, name);
 
-      if (user) {
-        history.push("/chat");
-      } else {
-        setError("Email already exists");
-      }
+    //   if (user) {
+    //     history.push("/chat");
+    //   } else {
+    //     setError("Email already exists");
+    //   }
 
-      setIsLoading(false);
-    }, 500);
+    //   setIsLoading(false);
+    // }, 500);
   };
 
   const handleBackToLogin = () => {

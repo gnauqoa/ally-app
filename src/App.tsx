@@ -1,268 +1,131 @@
-import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
-  IonButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonMenu,
-  IonMenuButton,
-  IonMenuToggle,
-  IonPage,
   IonRouterOutlet,
-  IonTitle,
-  IonToolbar,
+  IonSplitPane,
   setupIonicReact,
 } from "@ionic/react";
+import { Redirect, Route } from "react-router-dom";
+import { ThemeProvider } from "@/components/theme-provider";
+import { useAppSelector } from "@/redux/hooks";
+import AuthRoutes from "@/routes/auth";
+import GuestRoutes from "@/routes/guest";
+import Menu from "@/components/menu";
 import { IonReactRouter } from "@ionic/react-router";
-import {
-  chatbubbleEllipsesOutline,
-  homeOutline,
-  settingsOutline,
-  bookOutline,
-  logOutOutline,
-} from "ionicons/icons";
+import HomePage from "@/pages/home";
+import ChatPage from "@/pages/chat";
+import ChatDetail from "@/pages/chat/detail";
+import TakeQuizPage from "@/pages/quiz/take";
+import SettingsPage from "@/pages/settings";
 
-import "./App.css";
-/* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
 // import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
+
+/* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
+
+/* import '@ionic/react/css/palettes/dark.always.css'; */
+/* import '@ionic/react/css/palettes/dark.class.css'; */
 import "@ionic/react/css/palettes/dark.system.css";
 
-/* Theme variables */
-import "./theme/variables.css";
-import { ThemeProvider } from "./components/theme-provider";
-import ChatPage from "./pages/chat";
-import ChatDetail from "./pages/chat/detail";
-import ChatHeader from "./pages/chat/header";
-import QuizPage from "./pages/quiz";
-import CreateQuizPage from "./pages/quiz/create";
-import TakeQuizPage from "./pages/quiz/take";
-import QuizHeader from "./pages/quiz/header";
-import LoginPage from "./pages/auth/login";
+import "@/styles/app.css";
+import "@/styles/override.css";
 import RegisterPage from "./pages/auth/register";
-import SettingsPage from "./pages/settings";
-import HomePage from "./pages/home";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { getAuthState, logout } from "./lib/auth-storage";
-import { useHistory } from "react-router-dom";
-
+import LoginPage from "./pages/auth/login";
+import { ROUTE_PATHS } from "./lib/constant";
+import TabTitle from "./components/tab-title";
+import QuizTaskHeader from "./pages/quiz/header";
+import QuizPage from "./pages/quiz";
+import { useEffect } from "react";
+import { getProfileThunk } from "./redux/slices/auth";
+import { useAppDispatch } from "./redux/hooks";
 setupIonicReact();
 
 const App: React.FC = () => {
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getProfileThunk());
+    }
+  }, []);
+
   return (
-    <ThemeProvider>
+    <ThemeProvider storageKey="vite-ui-theme">
       <IonApp>
         <IonReactRouter>
-          <MainApp />
+          <IonSplitPane contentId="main-content">
+            <Menu />
+            <IonRouterOutlet id="main-content">
+              <Route
+                exact
+                path="/"
+                render={() => <Redirect to={ROUTE_PATHS.HOME} />}
+              />
+              <GuestRoutes
+                exact
+                path={ROUTE_PATHS.LOGIN}
+                component={LoginPage}
+              />
+              <GuestRoutes
+                exact
+                path={ROUTE_PATHS.REGISTER}
+                component={RegisterPage}
+              />
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.HOME}
+                component={HomePage}
+                title={<TabTitle title="Home" />}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.CHAT}
+                component={ChatPage}
+                title="Chat"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.CHAT_DETAIL}
+                component={ChatDetail}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.QUIZ}
+                component={QuizPage}
+                title="Tests"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.QUIZ_TAKE}
+                component={TakeQuizPage}
+                title={<QuizTaskHeader />}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.SETTINGS}
+                component={SettingsPage}
+                title="Settings"
+              />
+            </IonRouterOutlet>
+          </IonSplitPane>
         </IonReactRouter>
       </IonApp>
     </ThemeProvider>
-  );
-};
-
-const MainApp: React.FC = () => {
-  const history = useHistory();
-  const authState = getAuthState();
-
-  const handleLogout = () => {
-    logout();
-    history.push("/login");
-  };
-
-  return (
-    <>
-      {authState.isAuthenticated && (
-        <IonMenu menuId="main-menu" contentId="main-content">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Menu</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              <IonMenuToggle autoHide={false}>
-                <IonItem routerLink="/chat" routerDirection="none">
-                  <div className="flex gap-3 items-center">
-                    <IonIcon
-                      aria-hidden="true"
-                      slot="start"
-                      icon={chatbubbleEllipsesOutline}
-                    />
-                    <IonLabel>Chat</IonLabel>
-                  </div>
-                </IonItem>
-              </IonMenuToggle>
-
-              <IonMenuToggle autoHide={false}>
-                <IonItem routerLink="/quiz" routerDirection="none">
-                  <div className="flex gap-3 items-center">
-                    <IonIcon
-                      aria-hidden="true"
-                      slot="start"
-                      icon={bookOutline}
-                    />
-                    <IonLabel>Quiz</IonLabel>
-                  </div>
-                </IonItem>
-              </IonMenuToggle>
-
-              <IonMenuToggle autoHide={false}>
-                <IonItem routerLink="/home" routerDirection="none">
-                  <div className="flex gap-3 items-center">
-                    <IonIcon
-                      aria-hidden="true"
-                      slot="start"
-                      icon={homeOutline}
-                    />
-                    <IonLabel>Home</IonLabel>
-                  </div>
-                </IonItem>
-              </IonMenuToggle>
-
-              <IonMenuToggle autoHide={false}>
-                <IonItem routerLink="/settings" routerDirection="none">
-                  <div className="flex gap-3 items-center">
-                    <IonIcon
-                      aria-hidden="true"
-                      slot="start"
-                      icon={settingsOutline}
-                    />
-                    <IonLabel>Settings</IonLabel>
-                  </div>
-                </IonItem>
-              </IonMenuToggle>
-
-              <IonMenuToggle autoHide={false}>
-                <IonItem button onClick={handleLogout}>
-                  <div className="flex gap-3 items-center">
-                    <IonIcon
-                      aria-hidden="true"
-                      slot="start"
-                      icon={logOutOutline}
-                    />
-                    <IonLabel>Logout</IonLabel>
-                  </div>
-                </IonItem>
-              </IonMenuToggle>
-            </IonList>
-          </IonContent>
-        </IonMenu>
-      )}
-
-      <IonRouterOutlet id="main-content">
-        {/* Public routes */}
-        <Route exact path="/login">
-          <IonPage>
-            <IonContent fullscreen>
-              <LoginPage />
-            </IonContent>
-          </IonPage>
-        </Route>
-
-        <Route exact path="/register">
-          <IonPage>
-            <IonContent fullscreen>
-              <RegisterPage />
-            </IonContent>
-          </IonPage>
-        </Route>
-
-        {/* Protected routes */}
-        <ProtectedRoute exact path="/chat">
-          <IonPage>
-            <ChatHeader />
-            <IonContent fullscreen>
-              <ChatPage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/chat/:chatId">
-          <IonPage>
-            <ChatHeader />
-            <IonContent fullscreen>
-              <ChatDetail />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/quiz">
-          <IonPage>
-            <QuizHeader />
-            <IonContent fullscreen>
-              <QuizPage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/quiz/create">
-          <IonPage>
-            <QuizHeader />
-            <IonContent fullscreen>
-              <CreateQuizPage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/quiz/take/:quizId">
-          <IonPage>
-            <QuizHeader />
-            <IonContent fullscreen>
-              <TakeQuizPage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/home">
-          <IonPage>
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonMenuButton />
-                </IonButtons>
-                <IonTitle>Home</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-              <HomePage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <ProtectedRoute exact path="/settings">
-          <IonPage>
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonMenuButton />
-                </IonButtons>
-                <IonTitle>Settings</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-              <SettingsPage />
-            </IonContent>
-          </IonPage>
-        </ProtectedRoute>
-
-        <Route exact path="/">
-          <Redirect to={authState.isAuthenticated ? "/chat" : "/login"} />
-        </Route>
-      </IonRouterOutlet>
-    </>
   );
 };
 

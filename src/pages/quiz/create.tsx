@@ -1,21 +1,34 @@
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useIonRouter } from "@ionic/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2, Save } from "lucide-react";
-import { saveQuiz, Quiz, QuizQuestion } from "@/lib/quiz-storage";
+import { Plus, Trash2, Save, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { createQuiz } from "@/redux/slices/quiz";
+import type { CreateQuizQuestionRequest } from "@/apis/quiz";
 
 export default function CreateQuizPage() {
-  const history = useHistory();
-  const [title, setTitle] = useState("");
+  const router = useIonRouter();
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector((state) => state.quiz);
+  
+  const [code, setCode] = useState("");
+  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [questions, setQuestions] = useState<QuizQuestion[]>([
+  const [category, setCategory] = useState("");
+  const [localError, setLocalError] = useState("");
+  const [questions, setQuestions] = useState<CreateQuizQuestionRequest[]>([
     {
-      id: Date.now().toString(),
-      question: "",
-      options: ["", "", "", ""],
-      correctAnswer: 0,
+      order: 1,
+      text: "",
+      type: "SINGLE_CHOICE",
+      options: [
+        { text: "", score: 0 },
+        { text: "", score: 1 },
+        { text: "", score: 2 },
+        { text: "", score: 3 },
+      ],
     },
   ]);
 
@@ -23,32 +36,43 @@ export default function CreateQuizPage() {
     setQuestions([
       ...questions,
       {
-        id: Date.now().toString(),
-        question: "",
-        options: ["", "", "", ""],
-        correctAnswer: 0,
+        order: questions.length + 1,
+        text: "",
+        type: "SINGLE_CHOICE",
+        options: [
+          { text: "", score: 0 },
+          { text: "", score: 1 },
+          { text: "", score: 2 },
+          { text: "", score: 3 },
+        ],
       },
     ]);
   };
 
-  const removeQuestion = (id: string) => {
+  const removeQuestion = (index: number) => {
     if (questions.length > 1) {
-      setQuestions(questions.filter((q) => q.id !== id));
+      const filtered = questions.filter((_, i) => i !== index);
+      // Re-order questions
+      const reordered = filtered.map((q, i) => ({ ...q, order: i + 1 }));
+      setQuestions(reordered);
     }
   };
 
-  const updateQuestion = (id: string, field: string, value: any) => {
+  const updateQuestionText = (index: number, value: string) => {
     setQuestions(
-      questions.map((q) => (q.id === id ? { ...q, [field]: value } : q))
+      questions.map((q, i) => (i === index ? { ...q, text: value } : q))
     );
   };
 
-  const updateOption = (questionId: string, optionIndex: number, value: string) => {
+  const updateOption = (questionIndex: number, optionIndex: number, field: 'text' | 'score', value: string | number) => {
     setQuestions(
-      questions.map((q) => {
-        if (q.id === questionId) {
+      questions.map((q, i) => {
+        if (i === questionIndex) {
           const newOptions = [...q.options];
-          newOptions[optionIndex] = value;
+          newOptions[optionIndex] = {
+            ...newOptions[optionIndex],
+            [field]: value,
+          };
           return { ...q, options: newOptions };
         }
         return q;
@@ -56,33 +80,50 @@ export default function CreateQuizPage() {
     );
   };
 
-  const handleSave = () => {
-    if (!title.trim()) {
-      alert("Please enter a quiz title");
+  const handleSave = async () => {
+    setLocalError("");
+    
+    if (!code.trim()) {
+      setLocalError("Please enter a quiz code");
       return;
     }
 
-    if (questions.some((q) => !q.question.trim())) {
-      alert("Please fill in all questions");
+    if (!name.trim()) {
+      setLocalError("Please enter a quiz name");
       return;
     }
 
-    if (questions.some((q) => q.options.some((opt) => !opt.trim()))) {
-      alert("Please fill in all options");
+    if (!category.trim()) {
+      setLocalError("Please enter a quiz category");
       return;
     }
 
-    const quiz: Quiz = {
-      id: Date.now().toString(),
-      title,
-      description,
-      questions,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    if (questions.some((q) => !q.text.trim())) {
+      setLocalError("Please fill in all questions");
+      return;
+    }
 
-    saveQuiz(quiz);
-    history.push("/quiz");
+    if (questions.some((q) => q.options.some((opt) => !opt.text.trim()))) {
+      setLocalError("Please fill in all option texts");
+      return;
+    }
+
+    try {
+      await dispatch(
+        createQuiz({
+          code,
+          name,
+          description,
+          category,
+          questions,
+        })
+      ).unwrap();
+      
+      router.push("/quiz", "back");
+    } catch (err: any) {
+      console.error("Failed to create quiz:", err);
+      setLocalError(err || "Failed to create quiz");
+    }
   };
 
   return (
@@ -91,14 +132,46 @@ export default function CreateQuizPage() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-4">Create New Quiz</h1>
           
+          {(localError || error) && (
+            <div className="mb-4 rounded-lg bg-red-50 dark:bg-red-950 p-4 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {localError || error}
+              </p>
+            </div>
+          )}
+          
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Quiz Title</label>
+              <label className="block text-sm font-medium mb-2">Quiz Code</label>
               <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter quiz title"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="e.g., BDI, GAD-7"
                 className="w-full"
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Quiz Name</label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter quiz name"
+                className="w-full"
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Category</label>
+              <Input
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="e.g., Tâm lý, Sức khỏe"
+                className="w-full"
+                disabled={isLoading}
               />
             </div>
 
@@ -109,6 +182,7 @@ export default function CreateQuizPage() {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter quiz description"
                 className="w-full"
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -117,14 +191,14 @@ export default function CreateQuizPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">Questions</h2>
-            <Button onClick={addQuestion} size="sm" className="gap-2">
+            <Button onClick={addQuestion} size="sm" className="gap-2" disabled={isLoading}>
               <Plus className="h-4 w-4" />
               Add Question
             </Button>
           </div>
 
           {questions.map((question, qIndex) => (
-            <Card key={question.id} className="p-4">
+            <Card key={qIndex} className="p-4">
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -132,19 +206,21 @@ export default function CreateQuizPage() {
                       Question {qIndex + 1}
                     </label>
                     <Input
-                      value={question.question}
+                      value={question.text}
                       onChange={(e) =>
-                        updateQuestion(question.id, "question", e.target.value)
+                        updateQuestionText(qIndex, e.target.value)
                       }
                       placeholder="Enter your question"
                       className="w-full"
+                      disabled={isLoading}
                     />
                   </div>
                   {questions.length > 1 && (
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => removeQuestion(question.id)}
+                      onClick={() => removeQuestion(qIndex)}
+                      disabled={isLoading}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -152,30 +228,37 @@ export default function CreateQuizPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium">Options</label>
+                  <label className="block text-sm font-medium">Options (with scores)</label>
                   {question.options.map((option, optIndex) => (
                     <div key={optIndex} className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name={`correct-${question.id}`}
-                        checked={question.correctAnswer === optIndex}
-                        onChange={() =>
-                          updateQuestion(question.id, "correctAnswer", optIndex)
-                        }
-                        className="w-4 h-4"
-                      />
-                      <Input
-                        value={option}
-                        onChange={(e) =>
-                          updateOption(question.id, optIndex, e.target.value)
-                        }
-                        placeholder={`Option ${optIndex + 1}`}
-                        className="flex-1"
-                      />
+                      <div className="flex-1">
+                        <Input
+                          value={option.text}
+                          onChange={(e) =>
+                            updateOption(qIndex, optIndex, 'text', e.target.value)
+                          }
+                          placeholder={`Option ${optIndex + 1} text`}
+                          className="w-full"
+                          disabled={isLoading}
+                        />
+                      </div>
+                      <div className="w-24">
+                        <Input
+                          type="number"
+                          value={option.score}
+                          onChange={(e) =>
+                            updateOption(qIndex, optIndex, 'score', parseInt(e.target.value) || 0)
+                          }
+                          placeholder="Score"
+                          className="w-full"
+                          disabled={isLoading}
+                          min={0}
+                        />
+                      </div>
                     </div>
                   ))}
                   <p className="text-xs text-muted-foreground mt-1">
-                    Select the correct answer by clicking the radio button
+                    Each option can have a different score value
                   </p>
                 </div>
               </div>
@@ -184,14 +267,15 @@ export default function CreateQuizPage() {
         </div>
 
         <div className="mt-6 flex gap-3">
-          <Button onClick={handleSave} className="gap-2 flex-1">
+          <Button onClick={handleSave} className="gap-2 flex-1" disabled={isLoading}>
             <Save className="h-4 w-4" />
-            Save Quiz
+            {isLoading ? "Saving..." : "Save Quiz"}
           </Button>
           <Button
             variant="outline"
-            onClick={() => history.push("/quiz")}
+            onClick={() => router.push("/quiz", "back")}
             className="flex-1"
+            disabled={isLoading}
           >
             Cancel
           </Button>
