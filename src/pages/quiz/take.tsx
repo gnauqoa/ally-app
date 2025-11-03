@@ -44,10 +44,7 @@ export default function TakeQuizPage() {
 
   useEffect(() => {
     if (quiz && quiz.questions) {
-      setUserAnswers(
-        quiz.questions.map((question) => question.options[0].id)
-      );
-      setCurrentQuestionIndex(quiz.questions.length - 1);
+      setUserAnswers(new Array(quiz.questions.length).fill(-1));
     }
   }, [quiz]);
 

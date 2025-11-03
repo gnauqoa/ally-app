@@ -9,7 +9,7 @@ import { AuthResponse } from "@/@types/auth";
 
 // Base URL for API - change this to your actual API URL
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/v1";
+  import.meta.env.VITE_API_BASE_URL || "http://192.168.100.150:3000/v1";
 
 // Create axios instance
 const axiosInstance = axios.create({
