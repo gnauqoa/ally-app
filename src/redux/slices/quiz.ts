@@ -4,14 +4,14 @@ import {
   getQuizById,
   submitQuiz as submitQuizApi,
 } from "@/apis/quiz";
-
-import { Quiz, QuizResult, SubmitQuizRequest } from "@/@types/quiz";
+import { Quiz, SubmitQuizRequest } from "@/@types/quiz";
+import { Result } from "@/@types/result";
 
 interface QuizState {
   quizzes: Quiz[];
   currentQuiz: Quiz | null;
-  results: QuizResult[];
-  currentResult: QuizResult | null;
+  results: Result[];
+  currentResult: Result | null;
   isLoading: boolean;
   error: string | null;
   pagination: {

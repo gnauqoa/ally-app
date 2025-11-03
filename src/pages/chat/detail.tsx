@@ -199,7 +199,7 @@ export default function ChatDetail() {
                           }
                           key={category.id}
                           onClick={() =>
-                            !!chatRecord?.selectedCategory
+                            chatRecord?.selectedCategory
                               ? null
                               : handleCategorySelect(category.id)
                           }

@@ -47,6 +47,7 @@ import QuizPage from "./pages/quiz";
 import { useEffect } from "react";
 import { getProfileThunk } from "./redux/slices/auth";
 import { useAppDispatch } from "./redux/hooks";
+import ResultHistoryPage from "./pages/result-history";
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -113,6 +114,13 @@ const App: React.FC = () => {
                 path={ROUTE_PATHS.QUIZ_TAKE}
                 component={TakeQuizPage}
                 title={<QuizTaskHeader />}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.RESULT_HISTORY}
+                component={ResultHistoryPage}
+                title="Test Histories"
               />
 
               <AuthRoutes

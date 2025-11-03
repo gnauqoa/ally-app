@@ -1,4 +1,5 @@
-import { AxiosResponse } from "axios";
+import { Result } from "./result";
+import { PaginationResponse } from "./api";
 
 export interface QuizOption {
   id: number;
@@ -30,20 +31,8 @@ export interface Quiz {
   createdAt: string;
   updatedAt: string;
   questions?: QuizQuestion[];
-  results?: QuizResult[];
+  results?: Result[];
   userId?: string;
-}
-
-export interface QuizResult {
-  id: string;
-  quizId: string;
-  userId: string;
-  totalScore: number;
-  level: string;
-  resultJson: Record<string, { score: number; optionId: number }[]>;
-  quiz: Quiz;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface CreateQuizOptionRequest {
@@ -83,13 +72,3 @@ export interface SubmitQuizRequest {
   quizId: number;
   answers: QuizAnswer[];
 }
-
-export type QuizListResponse = AxiosResponse<{
-  data: Quiz[];
-  pagination: {
-    page: number;
-    limit: number;
-    totalPages: number;
-    totalItems: number;
-  };
-}>;

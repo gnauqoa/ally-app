@@ -1,11 +1,8 @@
 import axiosInstance from "@/lib/axios";
 import { AxiosResponse } from "axios";
-import {
-  Quiz,
-  QuizListResponse,
-  QuizResult,
-  SubmitQuizRequest,
-} from "@/@types/quiz";
+import { Quiz, SubmitQuizRequest } from "@/@types/quiz";
+import { Result } from "@/@types/result";
+import { PaginationResponse } from "@/@types/api";
 
 /**
  * Get all quizzes with pagination
@@ -13,7 +10,7 @@ import {
 export const getQuizzes = async (
   page = 1,
   limit = 10
-): Promise<QuizListResponse> =>
+): Promise<PaginationResponse<Quiz>> =>
   await axiosInstance.get("/quizzes", {
     params: { page, limit },
   });
@@ -30,5 +27,5 @@ export const getQuizById = async (
  */
 export const submitQuiz = async (
   data: SubmitQuizRequest
-): Promise<AxiosResponse<QuizResult>> =>
+): Promise<AxiosResponse<Result>> =>
   axiosInstance.post(`/quizzes/submit`, data);

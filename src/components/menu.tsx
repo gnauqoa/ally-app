@@ -12,6 +12,7 @@ import {
   bookOutline,
   homeOutline,
   logOutOutline,
+  timeOutline,
 } from "ionicons/icons";
 import { logoutThunk } from "@/redux/slices/auth";
 import { useAppDispatch } from "@/redux/hooks";
@@ -27,7 +28,7 @@ const Menu = () => {
 
   return (
     <IonMenu menuId="main-menu" contentId="main-content">
-      <IonContent >
+      <IonContent>
         <IonList
           style={{
             paddingTop: "env(safe-area-inset-top)",
@@ -64,6 +65,18 @@ const Menu = () => {
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={bookOutline} />
                 <IonLabel>Tests</IonLabel>
+              </div>
+            </IonItem>
+          </IonMenuToggle>
+
+          <IonMenuToggle autoHide={false}>
+            <IonItem
+              routerLink={ROUTE_PATHS.RESULT_HISTORY}
+              routerDirection="none"
+            >
+              <div className="flex gap-3 items-center">
+                <IonIcon aria-hidden="true" slot="start" icon={timeOutline} />
+                <IonLabel>Test Histories</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>

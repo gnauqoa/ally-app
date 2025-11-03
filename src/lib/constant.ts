@@ -12,6 +12,7 @@ export const ROUTE_PATHS = {
   SETTINGS: "/settings",
   LOGIN: "/login",
   REGISTER: "/register",
+  RESULT_HISTORY: "/result-history",
 };
 
 export const GET_ROUTE_PATHS = {

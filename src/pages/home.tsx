@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { MessageSquare, BookOpen, Settings } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { ROUTE_PATHS } from "@/lib/constant";
-import { logoutThunk } from "@/redux/slices/auth";
 
 export default function HomePage() {
   const router = useIonRouter();

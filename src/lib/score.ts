@@ -11,6 +11,6 @@ export const getInterpretation = (score: number): ScoreInterpretation => {
     range: [0, 0],
     description:
       "Điểm số của bạn cho thấy không có triệu chứng trầm cảm đáng kể.",
-    color: "text-slate-600",
+    color: "text-green-600",
   };
 };
