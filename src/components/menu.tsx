@@ -27,8 +27,12 @@ const Menu = () => {
 
   return (
     <IonMenu menuId="main-menu" contentId="main-content">
-      <IonContent>
-        <IonList style={{ paddingTop: "env(safe-area-inset-top)" }}>
+      <IonContent >
+        <IonList
+          style={{
+            paddingTop: "env(safe-area-inset-top)",
+          }}
+        >
           <p className="text-2xl font-bold pl-4 pt-[1rem]">Hi, {user?.name}</p>
           <p className="text-sm text-muted-foreground pl-4">
             How are you today?

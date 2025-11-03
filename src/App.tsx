@@ -64,7 +64,7 @@ const App: React.FC = () => {
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main-content">
-            <Menu />
+            {isAuthenticated && <Menu />}
             <IonRouterOutlet id="main-content">
               <Route
                 exact

@@ -72,8 +72,8 @@ export const logoutThunk = createAsyncThunk(
     if (!refreshToken) {
       return rejectWithValue("No refresh token found");
     }
-    await logout({ refreshToken });
     clearAuth();
+    await logout({ refreshToken });
   }
 );
 
