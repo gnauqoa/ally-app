@@ -33,33 +33,27 @@ export default function QuizItem({ quiz, onClick }: QuizItemProps) {
             <p className="text-sm text-muted-foreground mt-1">
               {quiz.description}
             </p>
-            {interpretation && quiz.results && quiz.results.length > 0 ? (
-              <div className="bg-input p-4 rounded-lg border my-2">
-                <h3
-                  className="text-sm font-semibold text-slate-500"
-                  style={{ marginTop: 0 }}
-                >
-                  Kết quả gần đây
-                </h3>
-
-                <p className={clsx(`text-xl font-bold`, interpretation.color)}>
-                  {quiz.results[0].totalScore} - {interpretation.level}
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  {dayjs(quiz.results[0].createdAt).format("DD-MM-YYYY")}
-                </p>
-              </div>
-            ) : (
-              <p className="text-slate-600 text-sm">
-                You haven't taken this assessment yet.
-              </p>
-            )}
             <p className="text-xs text-muted-foreground mt-2">
               {quiz.code} • {quiz.totalQuestions} questions •{" "}
               {dayjs(quiz.updatedAt).format("DD-MM-YYYY")}
             </p>
           </div>
         </div>
+        {interpretation && quiz.results && quiz.results.length > 0 ? (
+          <div className="bg-background/10 p-4 rounded-lg border mt-4">
+            <p
+              className="text-sm  font-semibold "
+              style={{ marginTop: 0, marginBottom: 6 }}
+            >
+              Kết quả gần đây
+            </p>
+            <p className={clsx(`text-md font-bold`, interpretation.color)}>
+              {quiz.results[0].totalScore} - {interpretation.level}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

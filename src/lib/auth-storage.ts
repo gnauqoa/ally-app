@@ -1,4 +1,4 @@
-import { AuthStateStorage, StoredUser } from "@/@types/auth";
+import { AuthStateStorage, User } from "@/@types/auth";
 
 const AUTH_KEY = "auth_state";
 
@@ -13,7 +13,7 @@ const emptyAuthState: AuthStateStorage = {
  * Save both user and token to localStorage
  */
 export const saveAuthState = (
-  user: StoredUser,
+  user: User,
   token: string,
   refreshToken: string
 ): void => {
@@ -86,12 +86,12 @@ export const setRefreshToken = (refreshToken: string): void => {
 /**
  * Get only user
  */
-export const getUser = (): StoredUser | null => getAuthState().user;
+export const getUser = (): User | null => getAuthState().user;
 
 /**
  * Update user only
  */
-export const setUser = (user: StoredUser): void => {
+export const setUser = (user: User): void => {
   const state = getAuthState();
   const updated: AuthStateStorage = {
     ...state,
