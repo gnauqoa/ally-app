@@ -1,24 +1,19 @@
 import { cn } from "@/lib/utils";
+import { ChatMessageRole, ChatMessage as ChatMessageType } from "@/@types/chat";
+import dayjs from "dayjs";
 
-interface Message {
-  id: string;
-  content: string;
-  role: "user" | "assistant";
-  timestamp: Date;
-}
-
-interface ChatMessageProps {
-  message: Message;
-}
-
-export default function ChatMessage({ message }: ChatMessageProps) {
-  const isUser = message.role === "user";
+export default function ChatMessage({
+  message,
+}: {
+  message: Omit<ChatMessageType, "session" | "id" | "sessionId">;
+}) {
+  const isUser = message.role === ChatMessageRole.USER;
 
   return (
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-xs rounded-lg px-4 py-3 sm:max-w-md lg:max-w-lg",
+          "max-w-xs max-w-[80%] rounded-lg px-4 py-3 sm:max-w-md lg:max-w-lg",
           isUser
             ? "bg-primary text-primary-foreground"
             : "bg-muted text-foreground"
@@ -31,10 +26,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
             isUser ? "text-primary-foreground/70" : "text-muted-foreground"
           )}
         >
-          {message.timestamp.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          {dayjs(message.createdAt).format("HH:mm")}
         </span>
       </div>
     </div>

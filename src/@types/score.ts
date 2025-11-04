@@ -1,6 +1,6 @@
 export type ScoreInterpretation = {
   level: string;
-  range: [number, number];
+  range: number[];
   description: string;
   color: string;
 };

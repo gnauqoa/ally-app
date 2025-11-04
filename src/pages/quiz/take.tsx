@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useIonRouter } from "@ionic/react";
+import {
+  useIonRouter,
+  useIonViewDidEnter,
+  useIonViewWillLeave,
+} from "@ionic/react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
@@ -31,16 +35,16 @@ export default function TakeQuizPage() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null); // Store option ID
   const showResult = currentResult !== null;
 
-  useEffect(() => {
+  useIonViewDidEnter(() => {
     if (quizId) {
       dispatch(fetchQuizById(quizId));
     }
-
-    return () => {
-      dispatch(clearCurrentQuiz());
-      dispatch(clearCurrentResult());
-    };
   }, [quizId, dispatch]);
+
+  useIonViewWillLeave(() => {
+    dispatch(clearCurrentQuiz());
+    dispatch(clearCurrentResult());
+  }, [dispatch]);
 
   useEffect(() => {
     if (quiz && quiz.questions) {
@@ -152,7 +156,10 @@ export default function TakeQuizPage() {
   };
 
   if (showResult) {
-    const interpretation = getInterpretation(currentResult.totalScore);
+    const interpretation = getInterpretation(
+      currentResult.totalScore,
+      quiz.code
+    );
 
     return (
       <Card className="p-8 rounded-2xl shadow-lg text-center animate-fade-in my-auto">

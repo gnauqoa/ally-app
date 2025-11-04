@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchQuizzes, clearError } from "@/redux/slices/quiz";
 import { AlertCircle } from "lucide-react";
 import { GET_ROUTE_PATHS } from "@/lib/constant";
-import QuizItem from "@/components/quiz-item";
+import QuizItem from "@/components/quiz/card";
 
 export default function QuizPage() {
   const router = useIonRouter();

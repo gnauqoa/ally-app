@@ -1,0 +1,46 @@
+{
+  "code": "DASS21",
+  "name": "Kết quả thang DASS 21",
+  "description": "Kết quả bao gồm 3 thang điểm riêng biệt. Điểm của mỗi thang được tính bằng cách cộng điểm các câu hỏi thành phần rồi nhân hệ số 2.",
+  "minScore": 0,
+  "maxScore": 42,
+  "results": {
+    "anxiety": [
+      { "range": [0, 7], "level": "Bình thường", "description": "Bình thường" },
+      { "range": [8, 9], "level": "Nhẹ", "description": "Nhẹ" },
+      { "range": [10, 14], "level": "Vừa", "description": "Vừa" },
+      { "range": [15, 19], "level": "Nặng", "description": "Nặng" },
+      {
+        "range": [20, 42],
+        "level": "Rất nặng",
+        "description": "Rất nặng (Điểm từ 20 trở lên)"
+      }
+    ],
+    "depression": [
+      { "range": [0, 9], "level": "Bình thường", "description": "Bình thường" },
+      { "range": [10, 13], "level": "Nhẹ", "description": "Nhẹ" },
+      { "range": [14, 20], "level": "Vừa", "description": "Vừa" },
+      { "range": [21, 27], "level": "Nặng", "description": "Nặng" },
+      {
+        "range": [28, 42],
+        "level": "Rất nặng",
+        "description": "Rất nặng (Điểm từ 28 trở lên)"
+      }
+    ],
+    "stress": [
+      {
+        "range": [0, 14],
+        "level": "Bình thường",
+        "description": "Bình thường"
+      },
+      { "range": [15, 18], "level": "Nhẹ", "description": "Nhẹ" },
+      { "range": [19, 25], "level": "Vừa", "description": "Vừa" },
+      { "range": [26, 33], "level": "Nặng", "description": "Nặng" },
+      {
+        "range": [34, 42],
+        "level": "Rất nặng",
+        "description": "Rất nặng (Điểm từ 34 trở lên)"
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 import {
   IonApp,
+  IonButton,
+  IonIcon,
   IonRouterOutlet,
   IonSplitPane,
   setupIonicReact,
@@ -42,12 +44,14 @@ import RegisterPage from "./pages/auth/register";
 import LoginPage from "./pages/auth/login";
 import { ROUTE_PATHS } from "./lib/constant";
 import TabTitle from "./components/tab-title";
-import QuizTaskHeader from "./pages/quiz/header";
+import QuizTaskHeader from "./components/quiz/header";
 import QuizPage from "./pages/quiz";
 import { useEffect } from "react";
 import { getProfileThunk } from "./redux/slices/auth";
 import { useAppDispatch } from "./redux/hooks";
 import ResultHistoryPage from "./pages/result-history";
+import ChatDetailHeader from "./components/chat/detail-header";
+import AddChatButton from "./components/chat/add-button";
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -86,27 +90,29 @@ const App: React.FC = () => {
                 exact
                 path={ROUTE_PATHS.HOME}
                 component={HomePage}
-                title={<TabTitle title="Home" />}
+                title={<TabTitle title="Trang chủ" />}
               />
 
               <AuthRoutes
                 exact
                 path={ROUTE_PATHS.CHAT}
                 component={ChatPage}
-                title="Chat"
+                title="Trò chuyện"
+                rightSlot={<AddChatButton />}
               />
 
               <AuthRoutes
                 exact
                 path={ROUTE_PATHS.CHAT_DETAIL}
                 component={ChatDetail}
+                customHeader={<ChatDetailHeader />}
               />
 
               <AuthRoutes
                 exact
                 path={ROUTE_PATHS.QUIZ}
                 component={QuizPage}
-                title="Tests"
+                title="Đánh giá tâm lý"
               />
 
               <AuthRoutes
@@ -120,14 +126,14 @@ const App: React.FC = () => {
                 exact
                 path={ROUTE_PATHS.RESULT_HISTORY}
                 component={ResultHistoryPage}
-                title="Test Histories"
+                title="Kết quả đánh giá"
               />
 
               <AuthRoutes
                 exact
                 path={ROUTE_PATHS.SETTINGS}
                 component={SettingsPage}
-                title="Settings"
+                title="Cài đặt"
               />
             </IonRouterOutlet>
           </IonSplitPane>

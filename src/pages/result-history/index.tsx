@@ -13,6 +13,7 @@ import { fetchQuizzes } from "@/redux/slices/quiz";
 import { stringToColor } from "@/lib/utils";
 import ResultHistoryList from "./list";
 import ResultHistoryChart from "./chart";
+import PageContainer from "@/components/page-container";
 
 export default function ResultHistoryPage() {
   const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ export default function ResultHistoryPage() {
   }, [code]);
 
   return (
-    <div className="flex h-full flex-col bg-background">
+    <PageContainer className="flex h-full flex-col bg-background">
       <div className="flex-1 py-6 sm:px-6">
         <div className="flex flex-row mb-4 ">
           <div
@@ -127,6 +128,6 @@ export default function ResultHistoryPage() {
           <ResultHistoryChart />
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 }

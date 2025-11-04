@@ -1,4 +1,3 @@
-import { getChatRecord, saveChatRecord } from "@/lib/chat-storage";
 import {
   IonButton,
   IonButtons,
@@ -8,27 +7,29 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { IonHeader } from "@ionic/react";
-import { ChevronLeft, Plus } from "lucide-react";
-import { useParams } from "react-router";
+import { ChevronLeft } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useClickAway } from "react-use";
-import { Button } from "@/components/ui/button";
+import { useAppDispatch } from "@/redux/hooks";
+import { updateChatSession } from "@/redux/slices/chat";
+import { ROUTE_PATHS } from "@/lib/constant";
+import { useChatSession } from "@/hooks/useChatSession";
+import TabTitle from "@/components/tab-title";
+import { limitText } from "@/lib/utils";
+import AddChatButton from "./add-button";
 
-const ChatHeader = () => {
-  const { chatId } = useParams<{ chatId: string }>();
-  const chatRecord = getChatRecord(chatId);
+const ChatDetailHeader = () => {
+  const { currentSession, isNewChat } = useChatSession();
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useIonRouter();
+  const dispatch = useAppDispatch();
 
-  const isChatDetail = !!chatId;
-  const isNewChat = isChatDetail && chatId === "new";
-
-  const currentTitle = chatRecord?.title || "New Chat";
+  const currentTitle = currentSession?.title || "Đoạn trò chuyện mới";
 
   const handleEditClick = () => {
-    if (!isNewChat && chatRecord) {
+    if (!isNewChat && currentSession) {
       setEditTitle(currentTitle);
       setIsEditing(true);
     }
@@ -57,13 +58,13 @@ const ChatHeader = () => {
   }, [isEditing]);
 
   const handleSaveTitle = () => {
-    if (!isNewChat && chatRecord && editTitle.trim()) {
-      const updatedRecord = {
-        ...chatRecord,
-        title: editTitle.trim(),
-        updatedAt: new Date(),
-      };
-      saveChatRecord(updatedRecord);
+    if (!isNewChat && currentSession && editTitle.trim()) {
+      dispatch(
+        updateChatSession({
+          sessionId: currentSession.id,
+          title: editTitle.trim(),
+        })
+      );
     }
     setIsEditing(false);
   };
@@ -83,7 +84,7 @@ const ChatHeader = () => {
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
-          <IonMenuButton style={{ "--color": "var(--color-primary)" }} />
+          <IonMenuButton />
         </IonButtons>
 
         {isEditing ? (
@@ -99,39 +100,36 @@ const ChatHeader = () => {
             />
           </div>
         ) : (
-          <IonTitle>
-            <div className="flex flex-row items-center justify-center gap-2">
-              {isChatDetail && (
+          <TabTitle
+            title={
+              <div className="flex flex-row items-center justify-center gap-2">
                 <ChevronLeft
                   color="var(--color-primary)"
-                  onClick={() => router.push("/chat")}
+                  onClick={() => router.goBack()}
                 />
-              )}
-              <span
-                onClick={!isNewChat ? handleEditClick : undefined}
-                className={
-                  !isNewChat
-                    ? "cursor-pointer hover:opacity-70 transition-opacity"
-                    : ""
-                }
-              >
-                {isChatDetail ? currentTitle : "Chat"}
-              </span>
-            </div>
-          </IonTitle>
-        )}
 
-        <IonButtons slot="end">
-          <IonButton routerLink="/chat/new">
-            <Plus
-              color="var(--color-primary)"
-              style={{ opacity: isNewChat ? 0 : 1 }}
-            />
-          </IonButton>
-        </IonButtons>
+                <span
+                  onClick={!isNewChat ? handleEditClick : undefined}
+                  className={
+                    !isNewChat
+                      ? "cursor-pointer hover:opacity-70 transition-opacity"
+                      : ""
+                  }
+                >
+                  {!isNewChat ? limitText(currentTitle, 10) : "Đoạn trò chuyện mới"}
+                </span>
+              </div>
+            }
+          />
+        )}
+        {!isNewChat && (
+          <IonButtons slot="end">
+            <AddChatButton />
+          </IonButtons>
+        )}
       </IonToolbar>
     </IonHeader>
   );
 };
 
-export default ChatHeader;
+export default ChatDetailHeader;

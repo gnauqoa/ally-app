@@ -1,16 +1,34 @@
-import { BDI_SCORE_INTERPRETATIONS } from "./constant";
 import { ScoreInterpretation } from "@/@types/score";
+import BDI from "@/assets/score/BDI.json";
+import ZUNG from "@/assets/score/ZUNG.json";
+import GRIT from "@/assets/score/GRIT.json";
+import REID from "@/assets/score/REID1984.json";
 
-export const getInterpretation = (score: number): ScoreInterpretation => {
-  if (score >= 1 && score <= 10) return BDI_SCORE_INTERPRETATIONS[0];
-  if (score >= 11 && score <= 16) return BDI_SCORE_INTERPRETATIONS[1];
-  if (score >= 17 && score <= 30) return BDI_SCORE_INTERPRETATIONS[2];
-  if (score >= 31) return BDI_SCORE_INTERPRETATIONS[3];
-  return {
-    level: "Không có triệu chứng",
+const SCORE_INTERPRETATIONS = {
+  BDI,
+  ZUNG,
+  GRIT,
+  REID1984: REID,
+};
+
+// const DASS21_INTERPRETATIONS = DASS21;
+
+// const HOLDAN_INTERPRETATIONS = HOLLAND;
+
+export const getInterpretation = (
+  score: number,
+  code: string
+): ScoreInterpretation => {
+  const scoreInterpretation = SCORE_INTERPRETATIONS[
+    code as keyof typeof SCORE_INTERPRETATIONS
+  ].results.find((result) => {
+    return score >= result.range[0] && score <= result.range[1];
+  }) ?? {
+    level: "",
     range: [0, 0],
-    description:
-      "Điểm số của bạn cho thấy không có triệu chứng trầm cảm đáng kể.",
-    color: "text-green-600",
+    description: "",
+    color: "text-slate-500",
   };
+
+  return scoreInterpretation ?? SCORE_INTERPRETATIONS.BDI.results[0];
 };

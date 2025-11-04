@@ -1,5 +1,3 @@
-"use client";
-
 import type React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -27,7 +25,6 @@ export default function ChatInput({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type me your problem..."
-            disabled={isLoading}
             className="flex-1"
           />
           <Button

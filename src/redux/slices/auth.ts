@@ -150,7 +150,7 @@ const authSlice = createSlice({
       })
       .addCase(getProfileThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })

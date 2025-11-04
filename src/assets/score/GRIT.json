@@ -1,0 +1,40 @@
+{
+  "code": "GRIT_RESULTS",
+  "name": "Kết quả thang đo bền chí Grit",
+  "description": "Đánh giá mức độ bền chí. Kết quả là điểm trung bình của 12 câu hỏi (đã đảo điểm các câu 2, 3, 5, 7, 8, 11).",
+  "minScore": 1.0,
+  "maxScore": 5.0,
+  "note": "Ảnh gốc chỉ cung cấp mô tả cho điểm 1.0 và 5.0. Các khoảng điểm và tên gọi ở giữa (Ít bền chí, Bền chí trung bình, Rất bền chí) được suy luận logic để chia đều thang điểm.",
+  "results": [
+    {
+      "range": [1.0, 1.79],
+      "level": "Không bền chí",
+      "description": "Bạn có xu hướng thay đổi mục tiêu hoặc dễ bỏ cuộc khi gặp khó khăn. Hãy bắt đầu bằng các mục tiêu nhỏ, thời hạn rõ ràng và theo dõi tiến trình mỗi ngày. Kỹ thuật chia nhỏ nhiệm vụ, củng cố thói quen và ghi nhận nỗ lực sẽ giúp tăng dần mức độ kiên trì.",
+      "color": "text-green-600"
+    },
+    {
+      "range": [1.8, 2.59],
+      "level": "Ít bền chí (Mức 2)",
+      "description": "Bạn duy trì nỗ lực tốt khi mọi thứ thuận lợi nhưng vẫn dễ nản khi gặp trở ngại. Hãy sử dụng kế hoạch dự phòng, xây dựng thói quen đều đặn và tìm người đồng hành/nhóm hỗ trợ để gia tăng trách nhiệm và động lực.",
+      "color": "text-yellow-600"
+    },
+    {
+      "range": [2.6, 3.39],
+      "level": "Bền chí trung bình (Mức 3)",
+      "description": "Bạn có khả năng kiên trì ở mức ổn định và thường quay lại với mục tiêu sau khi gián đoạn. Để tiến xa hơn, hãy nâng dần độ khó hợp lý, phản tư định kỳ về chiến lược đã dùng và khen thưởng cho các mốc quan trọng đạt được.",
+      "color": "text-orange-600"
+    },
+    {
+      "range": [3.4, 4.19],
+      "level": "Rất bền chí (Mức 4)",
+      "description": "Bạn theo đuổi mục tiêu dài hạn với quyết tâm cao và ít bị xao nhãng. Hãy chú ý cân bằng giữa nỗ lực và phục hồi (nghỉ ngơi, giải trí) để tránh kiệt sức, đồng thời linh hoạt điều chỉnh mục tiêu khi bối cảnh thay đổi.",
+      "color": "text-red-600"
+    },
+    {
+      "range": [4.2, 5.0],
+      "level": "Cực kỳ bền chí",
+      "description": "Bạn sở hữu mức độ kiên trì rất cao và ít khi rời bỏ mục tiêu. Đây là thế mạnh lớn, tuy nhiên hãy lưu ý đến rủi ro cố chấp quá mức. Định kỳ đánh giá lại tính phù hợp của mục tiêu, phân bổ thời gian cho nghỉ ngơi và các mối quan hệ để duy trì sự bền vững.",
+      "color": "text-red-600"
+    }
+  ]
+}

@@ -36,13 +36,13 @@ const Menu = () => {
         >
           <p className="text-2xl font-bold pl-4 pt-[1rem]">Hi, {user?.name}</p>
           <p className="text-sm text-muted-foreground pl-4">
-            How are you today?
+            Bạn có cảm thấy thế nào hôm nay?
           </p>
           <IonMenuToggle autoHide={false}>
             <IonItem routerLink={ROUTE_PATHS.HOME} routerDirection="none">
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={homeOutline} />
-                <IonLabel>Home</IonLabel>
+                <IonLabel>Trang chủ</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>
@@ -55,7 +55,7 @@ const Menu = () => {
                   slot="start"
                   icon={chatbubbleEllipsesOutline}
                 />
-                <IonLabel>Chat</IonLabel>
+                <IonLabel>Trò chuyện</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>
@@ -64,7 +64,7 @@ const Menu = () => {
             <IonItem routerLink={ROUTE_PATHS.QUIZ} routerDirection="none">
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={bookOutline} />
-                <IonLabel>Tests</IonLabel>
+                <IonLabel>Đánh giá tâm lý</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>
@@ -76,7 +76,7 @@ const Menu = () => {
             >
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={timeOutline} />
-                <IonLabel>Test Histories</IonLabel>
+                <IonLabel>Kết quả đánh giá</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>
@@ -85,7 +85,7 @@ const Menu = () => {
             <IonItem button onClick={handleLogout}>
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={logOutOutline} />
-                <IonLabel>Logout</IonLabel>
+                <IonLabel>Đăng xuất</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>

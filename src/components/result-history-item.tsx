@@ -5,7 +5,10 @@ import dayjs from "dayjs";
 import { stringToColor } from "@/lib/utils";
 
 const ResultHistoryItem = ({ result }: { result: Result }) => {
-  const interpretation = getInterpretation(result.totalScore);
+  const interpretation = getInterpretation(
+    result.totalScore,
+    result.quiz?.code || ""
+  );
   return (
     <Card className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
       <div>

@@ -2,6 +2,7 @@ import { Quiz } from "@/@types/quiz";
 import { getInterpretation } from "@/lib/score";
 import dayjs from "dayjs";
 import clsx from "clsx";
+import { stringToColor } from "@/lib/utils";
 
 interface QuizItemProps {
   quiz: Quiz;
@@ -11,7 +12,7 @@ interface QuizItemProps {
 export default function QuizItem({ quiz, onClick }: QuizItemProps) {
   const interpretation =
     quiz.results && quiz.results.length > 0
-      ? getInterpretation(quiz.results[0].totalScore)
+      ? getInterpretation(quiz.results[0].totalScore, quiz.code)
       : undefined;
 
   return (
@@ -21,7 +22,10 @@ export default function QuizItem({ quiz, onClick }: QuizItemProps) {
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <p className="font-medium text-foreground truncate text-2xl flex-1 min-w-0">
+          <p
+            style={{ color: stringToColor(quiz.name) }}
+            className="font-medium truncate text-2xl flex-1 min-w-0"
+          >
             {quiz.name}
           </p>
           <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary whitespace-nowrap flex-shrink-0">

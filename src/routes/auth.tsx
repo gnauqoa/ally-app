@@ -17,11 +17,15 @@ interface AuthRouteProps {
   path: string;
   exact?: boolean;
   title?: React.ReactNode | string;
+  customHeader?: React.ReactNode;
+  rightSlot?: React.ReactNode;
 }
 
 const AuthRoute: React.FC<AuthRouteProps> = ({
   component: Component,
   title,
+  customHeader,
+  rightSlot,
   ...rest
 }) => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -32,18 +36,23 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
       render={(props) =>
         isAuthenticated ? (
           <IonPage>
-            <IonHeader>
-              <IonToolbar>
-                <IonButtons slot="start">
-                  <IonMenuButton />
-                </IonButtons>
-                {typeof title === "string" ? (
-                  <TabTitle title={title} />
-                ) : (
-                  title
-                )}
-              </IonToolbar>
-            </IonHeader>
+            {customHeader ? (
+              customHeader
+            ) : (
+              <IonHeader>
+                <IonToolbar>
+                  <IonButtons slot="start">
+                    <IonMenuButton />
+                  </IonButtons>
+                  {typeof title === "string" ? (
+                    <TabTitle title={title} />
+                  ) : (
+                    title
+                  )}
+                  {rightSlot && <IonButtons slot="end">{rightSlot}</IonButtons>}
+                </IonToolbar>
+              </IonHeader>
+            )}
             <IonContent fullscreen>
               <PageContainer>
                 <Component {...props} />
