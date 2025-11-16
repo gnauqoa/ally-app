@@ -35,7 +35,7 @@ export default function ResultHistoryPage() {
   }, [code]);
 
   return (
-    <PageContainer className="flex h-full flex-col bg-background">
+    <PageContainer className="flex h-full flex-col bg-background px-4">
       <div className="flex-1 py-6 sm:px-6">
         <div className="flex flex-row mb-4 ">
           <div

@@ -60,7 +60,7 @@ export default function LoginPage() {
   };
 
   return (
-    <PageContainer className="flex items-center justify-center">
+    <PageContainer className="flex items-center justify-center px-4">
       <Card className="w-full max-w-md p-6 sm:p-8 flex overflow-y-auto">
         <div className="text-center">
           <h1 className="text-2xl sm:text-3xl font-bold mb-2">

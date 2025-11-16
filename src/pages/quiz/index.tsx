@@ -5,6 +5,7 @@ import { fetchQuizzes, clearError } from "@/redux/slices/quiz";
 import { AlertCircle } from "lucide-react";
 import { GET_ROUTE_PATHS } from "@/lib/constant";
 import QuizItem from "@/components/quiz/card";
+import PageContainer from "@/components/page-container";
 
 export default function QuizPage() {
   const router = useIonRouter();
@@ -25,7 +26,7 @@ export default function QuizPage() {
   };
 
   return (
-    <div className="flex h-full flex-col bg-background">
+    <PageContainer className="flex h-full flex-col bg-background px-4">
       <div className="flex-1 py-6 sm:px-6">
         <div className="w-full">
           {error && (
@@ -59,6 +60,6 @@ export default function QuizPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

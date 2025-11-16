@@ -13,11 +13,16 @@ import {
   homeOutline,
   logOutOutline,
   timeOutline,
+  journalOutline,
+  peopleOutline,
+  personAddOutline,
+  briefcaseOutline,
 } from "ionicons/icons";
 import { logoutThunk } from "@/redux/slices/auth";
 import { useAppDispatch } from "@/redux/hooks";
 import { ROUTE_PATHS } from "@/lib/constant";
 import { useAppSelector } from "@/redux/hooks";
+import { UserRole } from "@/@types/auth";
 
 const Menu = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -61,6 +66,15 @@ const Menu = () => {
           </IonMenuToggle>
 
           <IonMenuToggle autoHide={false}>
+            <IonItem routerLink={ROUTE_PATHS.JOURNAL} routerDirection="none">
+              <div className="flex gap-3 items-center">
+                <IonIcon aria-hidden="true" slot="start" icon={journalOutline} />
+                <IonLabel>Nhật ký cảm xúc</IonLabel>
+              </div>
+            </IonItem>
+          </IonMenuToggle>
+
+          <IonMenuToggle autoHide={false}>
             <IonItem routerLink={ROUTE_PATHS.QUIZ} routerDirection="none">
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={bookOutline} />
@@ -77,6 +91,44 @@ const Menu = () => {
               <div className="flex gap-3 items-center">
                 <IonIcon aria-hidden="true" slot="start" icon={timeOutline} />
                 <IonLabel>Kết quả đánh giá</IonLabel>
+              </div>
+            </IonItem>
+          </IonMenuToggle>
+
+          {user?.role === UserRole.PSYCHOLOGIST && (
+            <IonMenuToggle autoHide={false}>
+              <IonItem
+                routerLink={ROUTE_PATHS.PSYCHOLOGIST_DASHBOARD}
+                routerDirection="none"
+              >
+                <div className="flex gap-3 items-center">
+                  <IonIcon aria-hidden="true" slot="start" icon={briefcaseOutline} />
+                  <IonLabel>Bảng điều khiển</IonLabel>
+                </div>
+              </IonItem>
+            </IonMenuToggle>
+          )}
+
+          <IonMenuToggle autoHide={false}>
+            <IonItem
+              routerLink={ROUTE_PATHS.FIND_PSYCHOLOGIST}
+              routerDirection="none"
+            >
+              <div className="flex gap-3 items-center">
+                <IonIcon aria-hidden="true" slot="start" icon={personAddOutline} />
+                <IonLabel>Tìm chuyên gia</IonLabel>
+              </div>
+            </IonItem>
+          </IonMenuToggle>
+
+          <IonMenuToggle autoHide={false}>
+            <IonItem
+              routerLink={ROUTE_PATHS.MY_PSYCHOLOGISTS}
+              routerDirection="none"
+            >
+              <div className="flex gap-3 items-center">
+                <IonIcon aria-hidden="true" slot="start" icon={peopleOutline} />
+                <IonLabel>Chuyên gia của tôi</IonLabel>
               </div>
             </IonItem>
           </IonMenuToggle>

@@ -10,7 +10,7 @@ const PageContainer = ({
   return (
     <div
       className={clsx(
-        "flex flex-col h-full overflow-y-auto pb-[env(safe-area-inset-bottom)] px-4",
+        "flex flex-col h-full overflow-y-auto pb-[env(safe-area-inset-bottom)]",
         className
       )}
     >

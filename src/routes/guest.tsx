@@ -41,7 +41,7 @@ const GuestRoute: React.FC<GuestRouteProps> = ({
               </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-              <PageContainer>
+              <PageContainer className="px-4">
                 <HomePage />
               </PageContainer>
             </IonContent>

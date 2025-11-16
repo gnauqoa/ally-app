@@ -6,8 +6,14 @@ import {
   createChatMessage as createChatMessageApi,
   deleteChatSession as deleteChatSessionApi,
   updateChatSession as updateChatSessionApi,
+  analyzeSession as analyzeSessionApi,
+  generateSummary as generateSummaryApi,
+  addEmotionalFeedback as addEmotionalFeedbackApi,
+  getEmotionalFeedback as getEmotionalFeedbackApi,
+  getChatStats as getChatStatsApi,
 } from "@/apis/chat";
 import { ChatMessageRole, ChatSession } from "@/@types/chat";
+import { ChatSessionStatus, ChatStats, EmotionalFeedback } from "@/@types/consultation";
 import { aiClient } from "@/lib/ai";
 import { Chat } from "@google/genai";
 import { RootState } from "..";
@@ -15,12 +21,16 @@ import { AI_MODEL, AI_SYSTEM_INSTRUCTION } from "@/lib/constant";
 
 interface ChatState {
   sessions: (ChatSession & { aiChatSession?: Chat | null })[];
+  stats: ChatStats | null;
+  currentFeedback: EmotionalFeedback | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: ChatState = {
   sessions: [],
+  stats: null,
+  currentFeedback: null,
   isLoading: false,
   error: null,
 };
@@ -46,9 +56,9 @@ export const updateChatSession = createAsyncThunk(
 
 export const fetchChatSessions = createAsyncThunk(
   "chat/fetchChatSessions",
-  async (_, { rejectWithValue }) => {
+  async (status?: ChatSessionStatus, { rejectWithValue }) => {
     try {
-      const res = await getChatSessionsApi();
+      const res = await getChatSessionsApi(status);
       return res.data.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -156,6 +166,75 @@ export const deleteChatSession = createAsyncThunk(
     try {
       await deleteChatSessionApi(sessionId);
       return sessionId;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const analyzeSession = createAsyncThunk(
+  "chat/analyzeSession",
+  async (sessionId: number, { rejectWithValue }) => {
+    try {
+      const res = await analyzeSessionApi(sessionId);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const generateSummary = createAsyncThunk(
+  "chat/generateSummary",
+  async (sessionId: number, { rejectWithValue }) => {
+    try {
+      const res = await generateSummaryApi(sessionId);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addEmotionalFeedback = createAsyncThunk(
+  "chat/addEmotionalFeedback",
+  async (
+    {
+      sessionId,
+      data,
+    }: {
+      sessionId: number;
+      data: { rating: number; feelingBetter?: boolean; comment?: string };
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await addEmotionalFeedbackApi(sessionId, data);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getEmotionalFeedback = createAsyncThunk(
+  "chat/getEmotionalFeedback",
+  async (sessionId: number, { rejectWithValue }) => {
+    try {
+      const res = await getEmotionalFeedbackApi(sessionId);
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getChatStats = createAsyncThunk(
+  "chat/getChatStats",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await getChatStatsApi();
+      return res.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -283,6 +362,81 @@ const chatSlice = createSlice({
         state.sessions = state.sessions.filter((s) => s.id !== action.payload);
       })
       .addCase(deleteChatSession.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
+
+    /* ---------------------------- Analyze session ---------------------------- */
+    builder
+      .addCase(analyzeSession.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(analyzeSession.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const idx = state.sessions.findIndex((s) => s.id === action.payload.id);
+        if (idx !== -1) {
+          state.sessions[idx] = {
+            ...state.sessions[idx],
+            ...action.payload,
+          };
+        }
+      })
+      .addCase(analyzeSession.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
+
+    /* --------------------------- Generate summary ---------------------------- */
+    builder
+      .addCase(generateSummary.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(generateSummary.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const idx = state.sessions.findIndex((s) => s.id === action.payload.id);
+        if (idx !== -1) {
+          state.sessions[idx] = {
+            ...state.sessions[idx],
+            ...action.payload,
+          };
+        }
+      })
+      .addCase(generateSummary.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
+
+    /* ------------------------- Add emotional feedback ------------------------ */
+    builder
+      .addCase(addEmotionalFeedback.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addEmotionalFeedback.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentFeedback = action.payload;
+      })
+      .addCase(addEmotionalFeedback.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
+
+    /* ------------------------- Get emotional feedback ------------------------ */
+    builder
+      .addCase(getEmotionalFeedback.fulfilled, (state, action) => {
+        state.currentFeedback = action.payload;
+      })
+      .addCase(getEmotionalFeedback.rejected, (state, action) => {
+        state.error = action.payload as string;
+      });
+
+    /* ------------------------------ Get stats ------------------------------- */
+    builder
+      .addCase(getChatStats.fulfilled, (state, action) => {
+        state.stats = action.payload;
+      })
+      .addCase(getChatStats.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

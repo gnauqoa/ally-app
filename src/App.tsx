@@ -18,6 +18,14 @@ import ChatPage from "@/pages/chat";
 import ChatDetail from "@/pages/chat/detail";
 import TakeQuizPage from "@/pages/quiz/take";
 import SettingsPage from "@/pages/settings";
+import JournalPage from "@/pages/journal";
+import WriteJournalPage from "@/pages/journal/write";
+import ViewJournalPage from "@/pages/journal/view";
+import ResultDetailPage from "@/pages/result-history/detail";
+import PsychologistDashboard from "@/pages/psychologist/dashboard";
+import PatientProfile from "@/pages/psychologist/patient-profile";
+import FindPsychologist from "@/pages/patient/find-psychologist";
+import MyPsychologist from "@/pages/patient/my-psychologist";
 
 import "@ionic/react/css/core.css";
 
@@ -127,6 +135,62 @@ const App: React.FC = () => {
                 path={ROUTE_PATHS.RESULT_HISTORY}
                 component={ResultHistoryPage}
                 title="Kết quả đánh giá"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.RESULT_DETAIL}
+                component={ResultDetailPage}
+                title="Chi tiết kết quả"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.JOURNAL}
+                component={JournalPage}
+                title="Nhật ký cảm xúc"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.JOURNAL_WRITE}
+                component={WriteJournalPage}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.JOURNAL_VIEW}
+                component={ViewJournalPage}
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.PSYCHOLOGIST_DASHBOARD}
+                component={PsychologistDashboard}
+                title="Bảng điều khiển"
+                requiredRole="PSYCHOLOGIST"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.PSYCHOLOGIST_PATIENT}
+                component={PatientProfile}
+                title="Hồ sơ bệnh nhân"
+                requiredRole="PSYCHOLOGIST"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.FIND_PSYCHOLOGIST}
+                component={FindPsychologist}
+                title="Tìm chuyên gia"
+              />
+
+              <AuthRoutes
+                exact
+                path={ROUTE_PATHS.MY_PSYCHOLOGISTS}
+                component={MyPsychologist}
+                title="Chuyên gia của tôi"
               />
 
               <AuthRoutes

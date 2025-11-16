@@ -6,7 +6,7 @@ import {
   useIonViewWillLeave,
 } from "@ionic/react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
@@ -162,27 +162,100 @@ export default function TakeQuizPage() {
     );
 
     return (
-      <Card className="p-8 rounded-2xl shadow-lg text-center animate-fade-in my-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Kết quả</h1>
+      <div className="flex h-full flex-col bg-background overflow-y-auto p-4 space-y-4">
+        <Card className="p-8 rounded-2xl shadow-lg text-center">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Kết quả</h1>
 
-        <div className="flex flex-col">
-          <p className="text-slate-500 text-sm">YOUR SCORE</p>
-          <p className={`text-7xl font-bold ${interpretation.color}`}>
-            {currentResult.totalScore}
-          </p>
-          <p className={`text-xl font-semibold mt-2 ${interpretation.color}`}>
-            {interpretation.level}
-          </p>
+          <div className="flex flex-col">
+            <p className="text-slate-500 text-sm">ĐIỂM CỦA BẠN</p>
+            <p className={`text-7xl font-bold ${interpretation.color}`}>
+              {currentResult.totalScore}
+            </p>
+            <p className={`text-xl font-semibold mt-2 ${interpretation.color}`}>
+              {interpretation.level}
+            </p>
+          </div>
+
+          <div className="text-left bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-700 mt-4">
+            <p className="text-slate-700 dark:text-slate-300 text-sm">
+              {interpretation.description}
+            </p>
+          </div>
+        </Card>
+
+        {/* AI Interpretation */}
+        {currentResult.interpretation && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-lg">🤖</span>
+                </div>
+                <h3 className="font-semibold">Phân tích AI</h3>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                {currentResult.interpretation}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* AI Recommendations */}
+        {currentResult.recommendations && currentResult.recommendations.length > 0 && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-lg">💡</span>
+                </div>
+                <h3 className="font-semibold">Khuyến nghị</h3>
+              </div>
+              <ul className="space-y-2">
+                {currentResult.recommendations.map((rec, index) => (
+                  <li key={index} className="flex gap-2 text-sm">
+                    <span className="text-primary font-medium">•</span>
+                    <span className="text-muted-foreground">{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Comparison with previous */}
+        {currentResult.comparisonWithPrevious && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-lg">📊</span>
+                </div>
+                <h3 className="font-semibold">So sánh với lần trước</h3>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                {currentResult.comparisonWithPrevious}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Action Buttons */}
+        <div className="space-y-2">
+          <Button 
+            className="w-full" 
+            onClick={() => router.push(`/result-history/${currentResult.id}`)}
+          >
+            Xem chi tiết đầy đủ
+          </Button>
+          <Button 
+            variant="outline" 
+            className="w-full"
+            onClick={() => router.push(ROUTE_PATHS.QUIZ, "root")}
+          >
+            Xem các bài kiểm tra khác
+          </Button>
         </div>
-
-        <div className="text-left bg-slate-50 p-4 rounded-lg border border-slate-200 ">
-          <p className="text-slate-700 text-sm">{interpretation.description}</p>
-        </div>
-
-        <Button onClick={() => router.push(ROUTE_PATHS.QUIZ, "root")}>
-          Xem các bài kiểm tra khác
-        </Button>
-      </Card>
+      </div>
     );
   }
 

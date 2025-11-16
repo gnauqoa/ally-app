@@ -19,6 +19,7 @@ interface AuthRouteProps {
   title?: React.ReactNode | string;
   customHeader?: React.ReactNode;
   rightSlot?: React.ReactNode;
+  requiredRole?: string; // Add role-based guard
 }
 
 const AuthRoute: React.FC<AuthRouteProps> = ({
@@ -26,39 +27,64 @@ const AuthRoute: React.FC<AuthRouteProps> = ({
   title,
   customHeader,
   rightSlot,
+  requiredRole,
   ...rest
 }) => {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+
+  // Check role if required
+  const hasAccess = !requiredRole || user?.role === requiredRole;
 
   return (
     <Route
       {...rest}
       render={(props) =>
         isAuthenticated ? (
-          <IonPage>
-            {customHeader ? (
-              customHeader
-            ) : (
+          hasAccess ? (
+            <IonPage>
+              {customHeader ? (
+                customHeader
+              ) : (
+                <IonHeader>
+                  <IonToolbar>
+                    <IonButtons slot="start">
+                      <IonMenuButton />
+                    </IonButtons>
+                    {typeof title === "string" ? (
+                      <TabTitle title={title} />
+                    ) : (
+                      title
+                    )}
+                    {rightSlot && <IonButtons slot="end">{rightSlot}</IonButtons>}
+                  </IonToolbar>
+                </IonHeader>
+              )}
+              <IonContent fullscreen>
+                <Component {...props} />
+              </IonContent>
+            </IonPage>
+          ) : (
+            <IonPage>
               <IonHeader>
                 <IonToolbar>
                   <IonButtons slot="start">
                     <IonMenuButton />
                   </IonButtons>
-                  {typeof title === "string" ? (
-                    <TabTitle title={title} />
-                  ) : (
-                    title
-                  )}
-                  {rightSlot && <IonButtons slot="end">{rightSlot}</IonButtons>}
+                  <TabTitle title="Không có quyền truy cập" />
                 </IonToolbar>
               </IonHeader>
-            )}
-            <IonContent fullscreen>
-              <PageContainer>
-                <Component {...props} />
-              </PageContainer>
-            </IonContent>
-          </IonPage>
+              <IonContent fullscreen>
+                <PageContainer>
+                  <div className="flex flex-col items-center justify-center h-full py-12">
+                    <h2 className="text-2xl font-bold mb-4">Không có quyền truy cập</h2>
+                    <p className="text-muted-foreground text-center mb-6">
+                      Bạn không có quyền truy cập trang này. Chỉ dành cho chuyên gia tâm lý.
+                    </p>
+                  </div>
+                </PageContainer>
+              </IonContent>
+            </IonPage>
+          )
         ) : (
           <LoginPage />
         )

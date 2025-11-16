@@ -1,46 +1,298 @@
 {
   "code": "DASS21",
-  "name": "Kết quả thang DASS 21",
-  "description": "Kết quả bao gồm 3 thang điểm riêng biệt. Điểm của mỗi thang được tính bằng cách cộng điểm các câu hỏi thành phần rồi nhân hệ số 2.",
-  "minScore": 0,
-  "maxScore": 42,
-  "results": {
-    "anxiety": [
-      { "range": [0, 7], "level": "Bình thường", "description": "Bình thường" },
-      { "range": [8, 9], "level": "Nhẹ", "description": "Nhẹ" },
-      { "range": [10, 14], "level": "Vừa", "description": "Vừa" },
-      { "range": [15, 19], "level": "Nặng", "description": "Nặng" },
-      {
-        "range": [20, 42],
-        "level": "Rất nặng",
-        "description": "Rất nặng (Điểm từ 20 trở lên)"
-      }
-    ],
-    "depression": [
-      { "range": [0, 9], "level": "Bình thường", "description": "Bình thường" },
-      { "range": [10, 13], "level": "Nhẹ", "description": "Nhẹ" },
-      { "range": [14, 20], "level": "Vừa", "description": "Vừa" },
-      { "range": [21, 27], "level": "Nặng", "description": "Nặng" },
-      {
-        "range": [28, 42],
-        "level": "Rất nặng",
-        "description": "Rất nặng (Điểm từ 28 trở lên)"
-      }
-    ],
-    "stress": [
-      {
-        "range": [0, 14],
-        "level": "Bình thường",
-        "description": "Bình thường"
+  "name": "DASS-21 (Depression, Anxiety, Stress Scale)",
+  "description": "Đánh giá mức độ trầm cảm, lo âu và căng thẳng trong 21 câu hỏi",
+  "category": "EMOTIONAL",
+  "totalQuestions": 21,
+  "duration": 10,
+  "instructions": "Vui lòng đọc mỗi câu và chọn số 0, 1, 2 hoặc 3 để chỉ ra mức độ câu đó áp dụng với bạn trong tuần vừa qua.",
+  "retakeInterval": 14,
+  "questions": [
+    {
+      "order": 1,
+      "text": "Tôi thấy khó thư giãn",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 2,
+      "text": "Tôi nhận ra miệng khô",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 3,
+      "text": "Tôi dường như không thể trải nghiệm bất kỳ cảm giác tích cực nào",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 4,
+      "text": "Tôi gặp khó khăn trong việc thở (thở nhanh, khó thở khi không gắng sức)",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 5,
+      "text": "Tôi thấy khó bắt đầu làm việc",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 6,
+      "text": "Tôi có xu hướng phản ứng thái quá với các tình huống",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 7,
+      "text": "Tôi bị run (ví dụ: tay run)",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 8,
+      "text": "Tôi thấy khó thư giãn",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 9,
+      "text": "Tôi thấy mình ở trong các tình huống khiến tôi lo lắng đến mức cảm thấy nhẹ nhõm khi nó kết thúc",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 10,
+      "text": "Tôi cảm thấy rằng tôi không có gì để mong đợi",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 11,
+      "text": "Tôi thấy mình dễ bị kích động",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 12,
+      "text": "Tôi thấy khó thư giãn",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 13,
+      "text": "Tôi cảm thấy buồn và chán nản",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 14,
+      "text": "Tôi thấy mình không kiên nhẫn khi bị trì hoãn",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 15,
+      "text": "Tôi cảm thấy sắp ngất",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 16,
+      "text": "Tôi cảm thấy rằng tôi đã mất hứng thú với mọi thứ",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 17,
+      "text": "Tôi cảm thấy mình không xứng đáng làm một con người",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 18,
+      "text": "Tôi thấy mình khá nhạy cảm",
+      "type": "SCALE",
+      "subscale": "stress",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 19,
+      "text": "Tôi nhận thấy tim đập mạnh khi không gắng sức (ví dụ: cảm thấy nhịp tim tăng hoặc bỏ lỡ nhịp)",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 20,
+      "text": "Tôi cảm thấy sợ hãi mà không có lý do rõ ràng",
+      "type": "SCALE",
+      "subscale": "anxiety",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    },
+    {
+      "order": 21,
+      "text": "Tôi cảm thấy rằng cuộc sống vô nghĩa",
+      "type": "SCALE",
+      "subscale": "depression",
+      "options": [
+        { "text": "Không áp dụng chút nào", "score": 0 },
+        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
+        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
+        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
+      ]
+    }
+  ],
+  "scoring": {
+    "subscales": {
+      "depression": {
+        "questions": [3, 5, 10, 13, 16, 17, 21],
+        "ranges": [
+          { "min": 0, "max": 9, "level": "NORMAL", "label": "Bình thường" },
+          { "min": 10, "max": 13, "level": "MILD", "label": "Nhẹ" },
+          { "min": 14, "max": 20, "level": "MODERATE", "label": "Trung bình" },
+          { "min": 21, "max": 27, "level": "SEVERE", "label": "Nặng" },
+          { "min": 28, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+        ]
       },
-      { "range": [15, 18], "level": "Nhẹ", "description": "Nhẹ" },
-      { "range": [19, 25], "level": "Vừa", "description": "Vừa" },
-      { "range": [26, 33], "level": "Nặng", "description": "Nặng" },
-      {
-        "range": [34, 42],
-        "level": "Rất nặng",
-        "description": "Rất nặng (Điểm từ 34 trở lên)"
+      "anxiety": {
+        "questions": [2, 4, 7, 9, 15, 19, 20],
+        "ranges": [
+          { "min": 0, "max": 7, "level": "NORMAL", "label": "Bình thường" },
+          { "min": 8, "max": 9, "level": "MILD", "label": "Nhẹ" },
+          { "min": 10, "max": 14, "level": "MODERATE", "label": "Trung bình" },
+          { "min": 15, "max": 19, "level": "SEVERE", "label": "Nặng" },
+          { "min": 20, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+        ]
+      },
+      "stress": {
+        "questions": [1, 6, 8, 11, 12, 14, 18],
+        "ranges": [
+          { "min": 0, "max": 14, "level": "NORMAL", "label": "Bình thường" },
+          { "min": 15, "max": 18, "level": "MILD", "label": "Nhẹ" },
+          { "min": 19, "max": 25, "level": "MODERATE", "label": "Trung bình" },
+          { "min": 26, "max": 33, "level": "SEVERE", "label": "Nặng" },
+          { "min": 34, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+        ]
       }
-    ]
+    }
   }
 }

@@ -4,6 +4,8 @@ import quizReducer from "./slices/quiz";
 import resultReducer from "./slices/result";
 import chatReducer from "./slices/chat";
 import journalReducer from "./slices/journal";
+import psychologistReducer from "./slices/psychologist";
+import patientPsychologistReducer from "./slices/patient-psychologist";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     result: resultReducer,
     chat: chatReducer,
     journal: journalReducer,
+    psychologist: psychologistReducer,
+    patientPsychologist: patientPsychologistReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
