@@ -116,3 +116,4 @@ const resultSlice = createSlice({
 export const { clearError, clearCurrentResult, resetResultState } =
   resultSlice.actions;
 export default resultSlice.reducer;
+
