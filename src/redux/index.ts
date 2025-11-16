@@ -3,6 +3,7 @@ import authReducer from "./slices/auth";
 import quizReducer from "./slices/quiz";
 import resultReducer from "./slices/result";
 import chatReducer from "./slices/chat";
+import journalReducer from "./slices/journal";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     quiz: quizReducer,
     result: resultReducer,
     chat: chatReducer,
+    journal: journalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
