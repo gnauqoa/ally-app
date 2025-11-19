@@ -11,6 +11,8 @@ import {
 } from "@ionic/react";
 import PageContainer from "@/components/page-container";
 import TabTitle from "@/components/tab-title";
+import { UserRole } from "@/@types/auth";
+import PsychologistDashboard from "@/pages/psychologist/dashboard";
 
 interface GuestRouteProps {
   component: React.ComponentType<any>;
@@ -23,6 +25,8 @@ const GuestRoute: React.FC<GuestRouteProps> = ({
   ...rest
 }) => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
+  const isPsychologist = user?.role === UserRole.PSYCHOLOGIST;
 
   return (
     <Route
@@ -42,7 +46,7 @@ const GuestRoute: React.FC<GuestRouteProps> = ({
             </IonHeader>
             <IonContent fullscreen>
               <PageContainer className="px-4">
-                <HomePage />
+                {isPsychologist ? <PsychologistDashboard /> : <HomePage />}
               </PageContainer>
             </IonContent>
           </IonPage>

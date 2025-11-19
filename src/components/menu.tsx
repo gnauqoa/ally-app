@@ -44,7 +44,7 @@ const Menu = () => {
           <p className="text-sm text-muted-foreground pl-4">
             Bạn có cảm thấy thế nào hôm nay?
           </p>
-          {isPsychologist ? (
+          {!isPsychologist ? (
             <>
               <IonMenuToggle autoHide={false}>
                 <IonItem routerLink={ROUTE_PATHS.HOME} routerDirection="none">

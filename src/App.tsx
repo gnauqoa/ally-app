@@ -61,10 +61,13 @@ import ChatDetailHeader from "./components/chat/detail-header";
 import AddChatButton from "./components/chat/add-button";
 import { ToastProvider, Toaster } from "./components/ui/toast";
 import { fetchQuizzes } from "./redux/slices/quiz";
+import { UserRole } from "./@types/auth";
 setupIonicReact();
 
 const App: React.FC = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
+  const isPsychologist = user?.role === UserRole.PSYCHOLOGIST;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -82,127 +85,135 @@ const App: React.FC = () => {
             <IonSplitPane contentId="main-content">
               {isAuthenticated && <Menu />}
               <IonRouterOutlet id="main-content">
-              <Route
-                exact
-                path="/"
-                render={() => <Redirect to={ROUTE_PATHS.HOME} />}
-              />
-              <GuestRoutes
-                exact
-                path={ROUTE_PATHS.LOGIN}
-                component={LoginPage}
-              />
-              <GuestRoutes
-                exact
-                path={ROUTE_PATHS.REGISTER}
-                component={RegisterPage}
-              />
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.HOME}
-                component={HomePage}
-                title={<TabTitle title="Trang chủ" />}
-              />
+                <Route
+                  exact
+                  path="/"
+                  render={() => (
+                    <Redirect
+                      to={
+                        isPsychologist
+                          ? ROUTE_PATHS.PSYCHOLOGIST_DASHBOARD
+                          : ROUTE_PATHS.HOME
+                      }
+                    />
+                  )}
+                />
+                <GuestRoutes
+                  exact
+                  path={ROUTE_PATHS.LOGIN}
+                  component={LoginPage}
+                />
+                <GuestRoutes
+                  exact
+                  path={ROUTE_PATHS.REGISTER}
+                  component={RegisterPage}
+                />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.HOME}
+                  component={HomePage}
+                  title={<TabTitle title="Trang chủ" />}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.CHAT}
-                component={ChatPage}
-                title="Trò chuyện"
-                rightSlot={<AddChatButton />}
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.CHAT}
+                  component={ChatPage}
+                  title="Trò chuyện"
+                  rightSlot={<AddChatButton />}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.CHAT_DETAIL}
-                component={ChatDetail}
-                customHeader={<ChatDetailHeader />}
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.CHAT_DETAIL}
+                  component={ChatDetail}
+                  customHeader={<ChatDetailHeader />}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.QUIZ}
-                component={QuizPage}
-                title="Đánh giá tâm lý"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.QUIZ}
+                  component={QuizPage}
+                  title="Đánh giá tâm lý"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.QUIZ_TAKE}
-                component={TakeQuizPage}
-                title={<QuizTaskHeader />}
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.QUIZ_TAKE}
+                  component={TakeQuizPage}
+                  title={<QuizTaskHeader />}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.RESULT_HISTORY}
-                component={ResultHistoryPage}
-                title="Kết quả đánh giá"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.RESULT_HISTORY}
+                  component={ResultHistoryPage}
+                  title="Kết quả đánh giá"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.RESULT_DETAIL}
-                component={ResultDetailPage}
-                title="Chi tiết kết quả"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.RESULT_DETAIL}
+                  component={ResultDetailPage}
+                  title="Chi tiết kết quả"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.JOURNAL}
-                component={JournalPage}
-                title="Nhật ký cảm xúc"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.JOURNAL}
+                  component={JournalPage}
+                  title="Nhật ký cảm xúc"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.JOURNAL_WRITE}
-                component={WriteJournalPage}
-                customHeader={<JournalHeader />}
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.JOURNAL_WRITE}
+                  component={WriteJournalPage}
+                  customHeader={<JournalHeader />}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.JOURNAL_VIEW}
-                component={ViewJournalPage}
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.JOURNAL_VIEW}
+                  component={ViewJournalPage}
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.PSYCHOLOGIST_DASHBOARD}
-                component={PsychologistDashboard}
-                title="Bảng điều khiển"
-                requiredRole="PSYCHOLOGIST"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.PSYCHOLOGIST_DASHBOARD}
+                  component={PsychologistDashboard}
+                  title="Bảng điều khiển"
+                  requiredRole="PSYCHOLOGIST"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.PSYCHOLOGIST_PATIENT}
-                component={PatientProfile}
-                title="Hồ sơ bệnh nhân"
-                requiredRole="PSYCHOLOGIST"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.PSYCHOLOGIST_PATIENT}
+                  component={PatientProfile}
+                  title="Hồ sơ bệnh nhân"
+                  requiredRole="PSYCHOLOGIST"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.FIND_PSYCHOLOGIST}
-                component={FindPsychologist}
-                title="Tìm chuyên gia"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.FIND_PSYCHOLOGIST}
+                  component={FindPsychologist}
+                  title="Tìm chuyên gia"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.MY_PSYCHOLOGISTS}
-                component={MyPsychologist}
-                title="Chuyên gia của tôi"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.MY_PSYCHOLOGISTS}
+                  component={MyPsychologist}
+                  title="Chuyên gia của tôi"
+                />
 
-              <AuthRoutes
-                exact
-                path={ROUTE_PATHS.SETTINGS}
-                component={SettingsPage}
-                title="Cài đặt"
-              />
+                <AuthRoutes
+                  exact
+                  path={ROUTE_PATHS.SETTINGS}
+                  component={SettingsPage}
+                  title="Cài đặt"
+                />
               </IonRouterOutlet>
             </IonSplitPane>
           </IonReactRouter>
