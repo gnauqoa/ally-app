@@ -37,11 +37,16 @@ import {
   updatePlan,
   clearCurrentPatient,
 } from "@/redux/slices/psychologist";
-import {  TreatmentPlanStatus } from "@/@types/psychologist";
+import { TreatmentPlanStatus } from "@/@types/psychologist";
 import dayjs from "dayjs";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { noteSchema, treatmentPlanSchema, NoteFormValues, TreatmentPlanFormValues } from "@/lib/validations/psychologist";
+import {
+  noteSchema,
+  treatmentPlanSchema,
+  NoteFormValues,
+  TreatmentPlanFormValues,
+} from "@/lib/validations/psychologist";
 import { useToast } from "@/components/ui/toast";
 import {
   Form,
@@ -85,7 +90,9 @@ export default function PatientProfile() {
     },
   });
 
-  const patient = patients.find((p) => p.patientId === parseInt(patientId || "0"));
+  const patient = patients.find(
+    (p) => p.patientId === parseInt(patientId || "0")
+  );
 
   useEffect(() => {
     if (!patients.length) {
@@ -186,7 +193,9 @@ export default function PatientProfile() {
           </Button>
           <div className="flex-1">
             <h1 className="text-2xl font-bold">{patient.patient?.name}</h1>
-            <p className="text-sm text-muted-foreground">{patient.patient?.email}</p>
+            <p className="text-sm text-muted-foreground">
+              {patient.patient?.email}
+            </p>
           </div>
         </div>
 
@@ -224,11 +233,15 @@ export default function PatientProfile() {
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Giới tính</Label>
-                  <p className="font-medium">{patient.patient?.gender || "Không có"}</p>
+                  <p className="font-medium">
+                    {/* {patient.patient|| "Không có"} */}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Năm sinh</Label>
-                  <p className="font-medium">{patient.patient?.birthYear || "Không có"}</p>
+                  <p className="font-medium">
+                    {/* {patient.patient?.birthYear || "Không có"} */}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Kết nối từ</Label>
@@ -246,19 +259,35 @@ export default function PatientProfile() {
               <CardContent className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span>Xem nhật ký</span>
-                  <Badge variant={patient.permission?.canViewJournals ? "success" : "default"}>
+                  <Badge
+                    variant={
+                      patient.permission?.canViewJournals
+                        ? "success"
+                        : "default"
+                    }
+                  >
                     {patient.permission?.canViewJournals ? "Có" : "Không"}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Xem trò chuyện</span>
-                  <Badge variant={patient.permission?.canViewChats ? "success" : "default"}>
+                  <Badge
+                    variant={
+                      patient.permission?.canViewChats ? "success" : "default"
+                    }
+                  >
                     {patient.permission?.canViewChats ? "Có" : "Không"}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Xem đánh giá</span>
-                  <Badge variant={patient.permission?.canViewAssessments ? "success" : "default"}>
+                  <Badge
+                    variant={
+                      patient.permission?.canViewAssessments
+                        ? "success"
+                        : "default"
+                    }
+                  >
                     {patient.permission?.canViewAssessments ? "Có" : "Không"}
                   </Badge>
                 </div>
@@ -295,7 +324,9 @@ export default function PatientProfile() {
                           </Badge>
                         )}
                       </div>
-                      <p className="text-sm whitespace-pre-wrap">{note.content}</p>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {note.content}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
@@ -314,7 +345,9 @@ export default function PatientProfile() {
               <Card>
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <ClipboardList className="h-12 w-12 text-muted-foreground/50 mb-4" />
-                  <p className="text-muted-foreground">Chưa có kế hoạch điều trị nào</p>
+                  <p className="text-muted-foreground">
+                    Chưa có kế hoạch điều trị nào
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -324,7 +357,9 @@ export default function PatientProfile() {
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-lg">{plan.title}</CardTitle>
+                          <CardTitle className="text-lg">
+                            {plan.title}
+                          </CardTitle>
                           {plan.description && (
                             <p className="text-sm text-muted-foreground mt-1">
                               {plan.description}
@@ -350,7 +385,8 @@ export default function PatientProfile() {
                           <Calendar className="h-4 w-4" />
                           <span>
                             {dayjs(plan.startDate).format("DD/MM/YYYY")}
-                            {plan.endDate && ` - ${dayjs(plan.endDate).format("DD/MM/YYYY")}`}
+                            {plan.endDate &&
+                              ` - ${dayjs(plan.endDate).format("DD/MM/YYYY")}`}
                           </span>
                         </div>
                       )}
@@ -398,7 +434,10 @@ export default function PatientProfile() {
             </DialogDescription>
           </DialogHeader>
           <Form {...noteForm}>
-            <form onSubmit={noteForm.handleSubmit(handleCreateNote)} className="space-y-4">
+            <form
+              onSubmit={noteForm.handleSubmit(handleCreateNote)}
+              className="space-y-4"
+            >
               <FormField
                 control={noteForm.control}
                 name="content"
@@ -426,7 +465,9 @@ export default function PatientProfile() {
                   Hủy
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Lưu ghi chú
                 </Button>
               </DialogFooter>
@@ -445,7 +486,10 @@ export default function PatientProfile() {
             </DialogDescription>
           </DialogHeader>
           <Form {...planForm}>
-            <form onSubmit={planForm.handleSubmit(handleCreatePlan)} className="space-y-4">
+            <form
+              onSubmit={planForm.handleSubmit(handleCreatePlan)}
+              className="space-y-4"
+            >
               <FormField
                 control={planForm.control}
                 name="title"
@@ -491,11 +535,7 @@ export default function PatientProfile() {
                     <FormItem>
                       <FormLabel>Ngày bắt đầu</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="date"
-                          disabled={isLoading}
-                        />
+                        <Input {...field} type="date" disabled={isLoading} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -508,11 +548,7 @@ export default function PatientProfile() {
                     <FormItem>
                       <FormLabel>Ngày kết thúc</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="date"
-                          disabled={isLoading}
-                        />
+                        <Input {...field} type="date" disabled={isLoading} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -568,7 +604,9 @@ export default function PatientProfile() {
                   Hủy
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Tạo kế hoạch
                 </Button>
               </DialogFooter>
@@ -579,4 +617,3 @@ export default function PatientProfile() {
     </div>
   );
 }
-
