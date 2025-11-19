@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   searchPsychologists,
   getMyPsychologists,
-  connectPatient,
+  connectToPsychologist,
   updateRelationshipStatus,
   updatePermissions,
 } from "@/apis/psychologist";
@@ -50,7 +50,7 @@ export const searchForPsychologists = createAsyncThunk(
 
 export const fetchMyPsychologists = createAsyncThunk(
   "patientPsychologist/fetchMy",
-  async (status?: RelationshipStatus, { rejectWithValue }) => {
+  async ({ status }: { status?: RelationshipStatus }, { rejectWithValue }) => {
     try {
       const res = await getMyPsychologists(status);
       return res.data;
@@ -62,9 +62,9 @@ export const fetchMyPsychologists = createAsyncThunk(
 
 export const requestConnection = createAsyncThunk(
   "patientPsychologist/connect",
-  async (patientId: number, { rejectWithValue }) => {
+  async (psychologistId: number, { rejectWithValue }) => {
     try {
-      const res = await connectPatient(patientId);
+      const res = await connectToPsychologist(psychologistId);
       return res.data;
     } catch (error: any) {
       return rejectWithValue(error.message);

@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Search, UserPlus, CheckCircle2, Award } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { searchForPsychologists, requestConnection } from "@/redux/slices/patient-psychologist";
+import { useToast } from "@/components/ui/toast";
 
 export default function FindPsychologist() {
   const router = useIonRouter();
   const dispatch = useAppDispatch();
   const { psychologists, isLoading } = useAppSelector((state) => state.patientPsychologist);
+  const { success, error: toastError } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [requestingId, setRequestingId] = useState<number | null>(null);
 
@@ -27,9 +29,9 @@ export default function FindPsychologist() {
     setRequestingId(psychologistId);
     try {
       await dispatch(requestConnection(psychologistId)).unwrap();
-      // Success - maybe show toast
-    } catch (error) {
-      console.error("Failed to connect:", error);
+      success({ title: "Đã gửi yêu cầu kết nối" });
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi gửi yêu cầu");
     } finally {
       setRequestingId(null);
     }
@@ -91,9 +93,8 @@ export default function FindPsychologist() {
                         <div className="flex items-center gap-2 mb-1">
                           <CardTitle className="text-xl">{psych.user?.name}</CardTitle>
                           {psych.verified && (
-                            <Badge variant="success" className="text-xs">
-                              <CheckCircle2 className="h-3 w-3 mr-1" />
-                              Đã xác minh
+                            <Badge variant="success" className="rounded-full p-0 text-lg ml-auto">
+                              <CheckCircle2 className="h-5 w-5" />
                             </Badge>
                           )}
                         </div>

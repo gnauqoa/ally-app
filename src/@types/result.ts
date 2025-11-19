@@ -1,12 +1,18 @@
 import { Quiz } from "./quiz";
 
+export type ResultJson = {
+  questionId: number;
+  score: number;
+  optionId: number[];
+};
+
 export interface Result {
   id: number;
   quizId: number;
   userId: number;
   totalScore: number;
   level: string;
-  resultJson: Record<string, { score: number; optionId: number }[]>;
+  resultJson: ResultJson[];
   interpretation?: string;
   recommendations?: string[];
   previousResultId?: number;

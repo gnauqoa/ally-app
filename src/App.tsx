@@ -1,7 +1,5 @@
 import {
   IonApp,
-  IonButton,
-  IonIcon,
   IonRouterOutlet,
   IonSplitPane,
   setupIonicReact,
@@ -53,6 +51,7 @@ import LoginPage from "./pages/auth/login";
 import { ROUTE_PATHS } from "./lib/constant";
 import TabTitle from "./components/tab-title";
 import QuizTaskHeader from "./components/quiz/header";
+import JournalHeader from "./components/journal/journal-header";
 import QuizPage from "./pages/quiz";
 import { useEffect } from "react";
 import { getProfileThunk } from "./redux/slices/auth";
@@ -60,6 +59,8 @@ import { useAppDispatch } from "./redux/hooks";
 import ResultHistoryPage from "./pages/result-history";
 import ChatDetailHeader from "./components/chat/detail-header";
 import AddChatButton from "./components/chat/add-button";
+import { ToastProvider, Toaster } from "./components/ui/toast";
+import { fetchQuizzes } from "./redux/slices/quiz";
 setupIonicReact();
 
 const App: React.FC = () => {
@@ -69,16 +70,18 @@ const App: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(getProfileThunk());
+      dispatch(fetchQuizzes({ page: 1, limit: 50 }));
     }
   }, []);
 
   return (
     <ThemeProvider storageKey="vite-ui-theme">
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main-content">
-            {isAuthenticated && <Menu />}
-            <IonRouterOutlet id="main-content">
+      <ToastProvider>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main-content">
+              {isAuthenticated && <Menu />}
+              <IonRouterOutlet id="main-content">
               <Route
                 exact
                 path="/"
@@ -155,6 +158,7 @@ const App: React.FC = () => {
                 exact
                 path={ROUTE_PATHS.JOURNAL_WRITE}
                 component={WriteJournalPage}
+                customHeader={<JournalHeader />}
               />
 
               <AuthRoutes
@@ -199,10 +203,12 @@ const App: React.FC = () => {
                 component={SettingsPage}
                 title="Cài đặt"
               />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+          <Toaster />
+        </IonApp>
+      </ToastProvider>
     </ThemeProvider>
   );
 };

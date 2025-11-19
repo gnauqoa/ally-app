@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { ChatMessageRole, ChatMessage as ChatMessageType } from "@/@types/chat";
 import dayjs from "dayjs";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function ChatMessage({
   message,
@@ -19,7 +21,15 @@ export default function ChatMessage({
             : "bg-muted text-foreground"
         )}
       >
-        <p className="text-sm leading-relaxed">{message.content}</p>
+        {isUser ? (
+          <p className="text-sm leading-relaxed">{message.content}</p>
+        ) : (
+          <div className="text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {message.content}
+            </ReactMarkdown>
+          </div>
+        )}
         <span
           className={cn(
             "mt-1 block text-xs",

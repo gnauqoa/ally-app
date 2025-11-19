@@ -7,290 +7,144 @@
   "duration": 10,
   "instructions": "Vui lòng đọc mỗi câu và chọn số 0, 1, 2 hoặc 3 để chỉ ra mức độ câu đó áp dụng với bạn trong tuần vừa qua.",
   "retakeInterval": 14,
-  "questions": [
-    {
-      "order": 1,
-      "text": "Tôi thấy khó thư giãn",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 2,
-      "text": "Tôi nhận ra miệng khô",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 3,
-      "text": "Tôi dường như không thể trải nghiệm bất kỳ cảm giác tích cực nào",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 4,
-      "text": "Tôi gặp khó khăn trong việc thở (thở nhanh, khó thở khi không gắng sức)",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 5,
-      "text": "Tôi thấy khó bắt đầu làm việc",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 6,
-      "text": "Tôi có xu hướng phản ứng thái quá với các tình huống",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 7,
-      "text": "Tôi bị run (ví dụ: tay run)",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 8,
-      "text": "Tôi thấy khó thư giãn",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 9,
-      "text": "Tôi thấy mình ở trong các tình huống khiến tôi lo lắng đến mức cảm thấy nhẹ nhõm khi nó kết thúc",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 10,
-      "text": "Tôi cảm thấy rằng tôi không có gì để mong đợi",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 11,
-      "text": "Tôi thấy mình dễ bị kích động",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 12,
-      "text": "Tôi thấy khó thư giãn",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 13,
-      "text": "Tôi cảm thấy buồn và chán nản",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 14,
-      "text": "Tôi thấy mình không kiên nhẫn khi bị trì hoãn",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 15,
-      "text": "Tôi cảm thấy sắp ngất",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 16,
-      "text": "Tôi cảm thấy rằng tôi đã mất hứng thú với mọi thứ",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 17,
-      "text": "Tôi cảm thấy mình không xứng đáng làm một con người",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 18,
-      "text": "Tôi thấy mình khá nhạy cảm",
-      "type": "SCALE",
-      "subscale": "stress",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 19,
-      "text": "Tôi nhận thấy tim đập mạnh khi không gắng sức (ví dụ: cảm thấy nhịp tim tăng hoặc bỏ lỡ nhịp)",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 20,
-      "text": "Tôi cảm thấy sợ hãi mà không có lý do rõ ràng",
-      "type": "SCALE",
-      "subscale": "anxiety",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    },
-    {
-      "order": 21,
-      "text": "Tôi cảm thấy rằng cuộc sống vô nghĩa",
-      "type": "SCALE",
-      "subscale": "depression",
-      "options": [
-        { "text": "Không áp dụng chút nào", "score": 0 },
-        { "text": "Áp dụng một phần, hoặc thỉnh thoảng", "score": 1 },
-        { "text": "Áp dụng ở mức độ đáng kể, hoặc thường xuyên", "score": 2 },
-        { "text": "Áp dụng rất nhiều, hoặc hầu hết thời gian", "score": 3 }
-      ]
-    }
-  ],
   "scoring": {
     "subscales": {
       "depression": {
+        "name": "Trầm cảm",
         "questions": [3, 5, 10, 13, 16, 17, 21],
         "ranges": [
-          { "min": 0, "max": 9, "level": "NORMAL", "label": "Bình thường" },
-          { "min": 10, "max": 13, "level": "MILD", "label": "Nhẹ" },
-          { "min": 14, "max": 20, "level": "MODERATE", "label": "Trung bình" },
-          { "min": 21, "max": 27, "level": "SEVERE", "label": "Nặng" },
-          { "min": 28, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+          {
+            "min": 0,
+            "max": 9,
+            "level": "NORMAL",
+            "needHelpFromPsychologist": false,
+            "label": "Bình thường",
+            "description": "Bạn không có hoặc có rất ít các triệu chứng trầm cảm. Tâm trạng ổn định và cảm thấy hài lòng với cuộc sống hiện tại."
+          },
+          {
+            "min": 10,
+            "max": 13,
+            "level": "MILD",
+            "needHelpFromPsychologist": false,
+            "label": "Nhẹ",
+            "description": "Bạn có một số dấu hiệu trầm cảm nhẹ, đôi khi cảm thấy buồn bã, mất hứng thú, hoặc mệt mỏi. Các triệu chứng này thường không ảnh hưởng đáng kể đến hoạt động hàng ngày."
+          },
+          {
+            "min": 14,
+            "max": 20,
+            "level": "MODERATE",
+            "needHelpFromPsychologist": false,
+            "label": "Trung bình",
+            "description": "Các triệu chứng trầm cảm trở nên rõ ràng và thường xuyên hơn, ảnh hưởng đến tâm trạng, giấc ngủ, năng lượng và khả năng tập trung. Cần chú ý theo dõi và thực hiện các biện pháp hỗ trợ tâm lý."
+          },
+          {
+            "min": 21,
+            "max": 27,
+            "level": "SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Nặng",
+            "description": "Bạn đang trải qua nhiều triệu chứng trầm cảm nặng, bao gồm cảm giác tuyệt vọng, mất niềm vui sâu sắc, và có thể có suy nghĩ về việc tự làm hại bản thân. **Cần tìm kiếm sự giúp đỡ từ chuyên gia tâm lý hoặc bác sĩ tâm thần ngay lập tức.**"
+          },
+          {
+            "min": 28,
+            "max": 42,
+            "level": "EXTREMELY_SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Cực kỳ nặng",
+            "description": "Các triệu chứng trầm cảm nghiêm trọng, kéo dài và gần như tê liệt khả năng hoạt động. Rủi ro tự làm hại bản thân rất cao. **Đây là tình trạng cấp bách, cần sự can thiệp và hỗ trợ chuyên môn khẩn cấp.**"
+          }
         ]
       },
       "anxiety": {
+        "name": "Lo âu",
         "questions": [2, 4, 7, 9, 15, 19, 20],
         "ranges": [
-          { "min": 0, "max": 7, "level": "NORMAL", "label": "Bình thường" },
-          { "min": 8, "max": 9, "level": "MILD", "label": "Nhẹ" },
-          { "min": 10, "max": 14, "level": "MODERATE", "label": "Trung bình" },
-          { "min": 15, "max": 19, "level": "SEVERE", "label": "Nặng" },
-          { "min": 20, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+          {
+            "min": 0,
+            "max": 7,
+            "level": "NORMAL",
+            "needHelpFromPsychologist": false,
+            "label": "Bình thường",
+            "description": "Bạn ít hoặc không có cảm giác lo lắng quá mức. Khả năng đối phó với các tình huống gây căng thẳng là tốt."
+          },
+          {
+            "min": 8,
+            "max": 9,
+            "level": "MILD",
+            "needHelpFromPsychologist": false,
+            "label": "Nhẹ",
+            "description": "Bạn có một số dấu hiệu lo âu nhẹ, chẳng hạn như cảm thấy căng thẳng hoặc bồn chồn trong một số tình huống. Mức độ lo lắng không gây cản trở đáng kể."
+          },
+          {
+            "min": 10,
+            "max": 14,
+            "level": "MODERATE",
+            "needHelpFromPsychologist": false,
+            "label": "Trung bình",
+            "description": "Các triệu chứng lo âu ở mức độ trung bình, có thể bao gồm các biểu hiện thể chất (như tim đập nhanh, khó thở nhẹ) và tâm lý (cảm giác sợ hãi, lo lắng kéo dài). Các triệu chứng này có thể bắt đầu ảnh hưởng đến cuộc sống hàng ngày."
+          },
+          {
+            "min": 15,
+            "max": 19,
+            "level": "SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Nặng",
+            "description": "Bạn thường xuyên có các cơn hoảng loạn hoặc lo âu dữ dội, kèm theo các triệu chứng thể chất rõ rệt (như run rẩy, đổ mồ hôi). Mức độ lo âu này gây ra sự khó chịu và ảnh hưởng nghiêm trọng đến sinh hoạt. **Cần tìm kiếm sự hỗ trợ chuyên môn.**"
+          },
+          {
+            "min": 20,
+            "max": 42,
+            "level": "EXTREMELY_SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Cực kỳ nặng",
+            "description": "Các triệu chứng lo âu, hoảng loạn nghiêm trọng và kéo dài. Lo lắng chiếm ưu thế, gây ra sự suy giảm chức năng đáng kể. **Cần sự can thiệp khẩn cấp từ chuyên gia tâm lý hoặc bác sĩ.**"
+          }
         ]
       },
       "stress": {
+        "name": "Căng thẳng",
         "questions": [1, 6, 8, 11, 12, 14, 18],
         "ranges": [
-          { "min": 0, "max": 14, "level": "NORMAL", "label": "Bình thường" },
-          { "min": 15, "max": 18, "level": "MILD", "label": "Nhẹ" },
-          { "min": 19, "max": 25, "level": "MODERATE", "label": "Trung bình" },
-          { "min": 26, "max": 33, "level": "SEVERE", "label": "Nặng" },
-          { "min": 34, "max": 42, "level": "EXTREMELY_SEVERE", "label": "Cực kỳ nặng" }
+          {
+            "min": 0,
+            "max": 14,
+            "level": "NORMAL",
+            "needHelpFromPsychologist": false,
+            "label": "Bình thường",
+            "description": "Bạn có khả năng đối phó tốt với các yêu cầu và áp lực trong cuộc sống. Cảm giác thư giãn và bình tĩnh là chủ yếu."
+          },
+          {
+            "min": 15,
+            "max": 18,
+            "level": "MILD",
+            "needHelpFromPsychologist": false,
+            "label": "Nhẹ",
+            "description": "Bạn có một số dấu hiệu căng thẳng nhẹ, chẳng hạn như dễ bị kích thích hoặc thiếu kiên nhẫn hơn bình thường. Cần chú ý đến việc quản lý căng thẳng."
+          },
+          {
+            "min": 19,
+            "max": 25,
+            "level": "MODERATE",
+            "needHelpFromPsychologist": false,
+            "label": "Trung bình",
+            "description": "Mức độ căng thẳng trung bình, thường xuyên cảm thấy khó thư giãn, dễ cáu kỉnh và có thể có những thay đổi trong thói quen (như khó ngủ). Cần áp dụng các kỹ thuật giảm stress."
+          },
+          {
+            "min": 26,
+            "max": 33,
+            "level": "SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Nặng",
+            "description": "Căng thẳng nghiêm trọng, biểu hiện qua sự khó chịu liên tục, phản ứng thái quá với các tình huống nhỏ, và khó khăn trong việc thư giãn. Căng thẳng ảnh hưởng tiêu cực đến sức khỏe và các mối quan hệ. **Nên tham khảo ý kiến chuyên gia tâm lý.**"
+          },
+          {
+            "min": 34,
+            "max": 42,
+            "level": "EXTREMELY_SEVERE",
+            "needHelpFromPsychologist": true,
+            "label": "Cực kỳ nặng",
+            "description": "Mức độ căng thẳng cực kỳ cao, gần như không thể đối phó. Bạn cảm thấy quá tải và kiệt sức, có thể có các vấn đề về sức khỏe thể chất liên quan đến căng thẳng. **Cần sự hỗ trợ và can thiệp chuyên môn khẩn cấp.**"
+          }
         ]
       }
     }

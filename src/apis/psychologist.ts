@@ -34,9 +34,16 @@ export const searchPsychologists = (params?: {
   );
 
 // Relationships
+// For psychologist adding a patient (psychologist-facing)
 export const connectPatient = (patientId: number) =>
   axiosInstance.post<PatientPsychologist>("/psychologists/patients", {
     patientId,
+  });
+
+// For patient requesting connection to a psychologist (patient-facing)
+export const connectToPsychologist = (psychologistId: number) =>
+  axiosInstance.post<PatientPsychologist>("/psychologists/my-psychologists", {
+    psychologistId,
   });
 
 export const getMyPatients = (status?: RelationshipStatus) =>

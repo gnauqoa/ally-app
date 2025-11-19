@@ -21,6 +21,7 @@ import {
 } from "@/redux/slices/patient-psychologist";
 import { RelationshipStatus } from "@/@types/psychologist";
 import dayjs from "dayjs";
+import { useToast } from "@/components/ui/toast";
 
 const statusLabels: Record<RelationshipStatus, string> = {
   [RelationshipStatus.PENDING]: "Chờ xác nhận",
@@ -39,6 +40,7 @@ export default function MyPsychologist() {
   const { myPsychologists, isLoading } = useAppSelector(
     (state) => state.patientPsychologist
   );
+  const { success, error: toastError } = useToast();
   const [selectedRelationship, setSelectedRelationship] = useState<number | null>(null);
   const [permissions, setPermissions] = useState({
     canViewJournals: false,
@@ -48,7 +50,7 @@ export default function MyPsychologist() {
   });
 
   useEffect(() => {
-    dispatch(fetchMyPsychologists());
+    dispatch(fetchMyPsychologists({ status: RelationshipStatus.ACTIVE }));
   }, [dispatch]);
 
   const handleOpenPermissions = (relationshipId: number) => {
@@ -74,9 +76,10 @@ export default function MyPsychologist() {
           permissions,
         })
       ).unwrap();
+      success({ title: "Đã lưu thay đổi quyền truy cập" });
       setSelectedRelationship(null);
-    } catch (error) {
-      console.error("Failed to update permissions:", error);
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi lưu thay đổi");
     }
   };
 
@@ -88,8 +91,9 @@ export default function MyPsychologist() {
           status: RelationshipStatus.INACTIVE,
         })
       ).unwrap();
-    } catch (error) {
-      console.error("Failed to disconnect:", error);
+      success({ title: "Đã ngắt kết nối với chuyên gia" });
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi ngắt kết nối");
     }
   };
 

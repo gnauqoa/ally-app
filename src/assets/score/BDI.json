@@ -8,24 +8,28 @@
     {
       "range": [0, 13],
       "level": "Bình thường",
+      "needHelpFromPsychologist": false,
       "description": "Điểm số cho thấy bạn không có triệu chứng trầm cảm đáng kể hoặc chỉ ở mức tối thiểu. Hãy duy trì các thói quen lành mạnh như ngủ đủ giấc, vận động thường xuyên, giữ kết nối xã hội và chăm sóc bản thân. Nếu có triệu chứng buồn bã kéo dài nhiều tuần hoặc ảnh hưởng đến công việc/học tập, hãy cân nhắc trao đổi với chuyên gia.",
       "color": "text-green-600"
     },
     {
       "range": [14, 19],
       "level": "Mức nhẹ",
+      "needHelpFromPsychologist": false,
       "description": "Bạn có thể đang trải qua một số triệu chứng như buồn bã, giảm hứng thú, mệt mỏi nhẹ hoặc khó tập trung. Hãy ưu tiên tự chăm sóc (ngủ – ăn – vận động – thư giãn), nói chuyện với người đáng tin cậy và theo dõi mức độ triệu chứng trong 2–4 tuần. Nếu triệu chứng tăng lên hoặc kéo dài, nên tham vấn chuyên gia tâm lý.",
       "color": "text-yellow-600"
     },
     {
       "range": [20, 29],
       "level": "Mức vừa",
+      "needHelpFromPsychologist": true,
       "description": "Các triệu chứng trầm cảm ở mức vừa có thể ảnh hưởng đáng kể đến năng lượng, giấc ngủ, cảm giác tội lỗi/giá trị bản thân và hiệu suất làm việc/học tập. Bạn nên cân nhắc đặt lịch trao đổi với chuyên gia sức khỏe tâm thần để được đánh giá và hỗ trợ (ví dụ liệu pháp nhận thức – hành vi, xây dựng kế hoạch hoạt động hằng ngày).",
       "color": "text-orange-600"
     },
     {
       "range": [30, 63],
       "level": "Mức nặng",
+      "needHelpFromPsychologist": true,
       "description": "Trầm cảm mức nặng có thể kèm theo tuyệt vọng, giảm động lực rõ rệt, rối loạn giấc ngủ/ăn uống và suy giảm chức năng. Hãy tìm sự hỗ trợ chuyên môn sớm để được đánh giá toàn diện và xây dựng kế hoạch điều trị. Nếu xuất hiện ý nghĩ tự làm hại bản thân hoặc không an toàn, vui lòng liên hệ ngay dịch vụ khẩn cấp hoặc đường dây hỗ trợ gần nhất.",
       "color": "text-red-600"
     }

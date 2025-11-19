@@ -150,7 +150,7 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournals.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch journals';
+        state.error = action.error.message || 'Không thể tải nhật ký';
       });
 
     // Fetch journal by date
@@ -165,7 +165,7 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournalByDate.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch journal';
+        state.error = action.error.message || 'Không thể tải nhật ký';
       });
 
     // Create journal
@@ -181,7 +181,7 @@ const journalSlice = createSlice({
       })
       .addCase(createJournal.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to create journal';
+        state.error = action.error.message || 'Không thể tạo nhật ký';
       });
 
     // Update journal
@@ -222,7 +222,7 @@ const journalSlice = createSlice({
       })
       .addCase(analyzeJournal.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to analyze journal';
+        state.error = action.error.message || 'Không thể phân tích nhật ký';
       });
 
     // Fetch emotion trend

@@ -10,11 +10,6 @@ interface QuizItemProps {
 }
 
 export default function QuizItem({ quiz, onClick }: QuizItemProps) {
-  const interpretation =
-    quiz.results && quiz.results.length > 0
-      ? getInterpretation(quiz.results[0].totalScore, quiz.code)
-      : undefined;
-
   return (
     <div
       className="group flex items-center justify-between rounded-lg border border-border bg-card p-4 transition-colors hover:bg-muted cursor-pointer"
@@ -43,21 +38,6 @@ export default function QuizItem({ quiz, onClick }: QuizItemProps) {
             </p>
           </div>
         </div>
-        {interpretation && quiz.results && quiz.results.length > 0 ? (
-          <div className="bg-background/10 p-4 rounded-lg border mt-4">
-            <p
-              className="text-sm  font-semibold "
-              style={{ marginTop: 0, marginBottom: 6 }}
-            >
-              Kết quả gần đây
-            </p>
-            <p className={clsx(`text-md font-bold`, interpretation.color)}>
-              {quiz.results[0].totalScore} - {interpretation.level}
-            </p>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );

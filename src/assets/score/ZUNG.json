@@ -8,30 +8,35 @@
     {
       "range": [20, 40],
       "level": "Không lo âu",
+      "needHelpFromPsychologist": false,
       "description": "Mức lo âu hiện thấp hoặc không đáng kể. Hãy tiếp tục duy trì lối sống lành mạnh: ngủ đủ, vận động, hạn chế caffeine/rượu và thực hành thư giãn (hít thở sâu, thiền, đi bộ). Nếu các triệu chứng mới xuất hiện và kéo dài, hãy theo dõi và cân nhắc tham vấn.",
       "color": "text-green-600"
     },
     {
       "range": [41, 50],
       "level": "Lo âu mức độ nhẹ",
+      "needHelpFromPsychologist": false,
       "description": "Bạn có thể thấy bồn chồn, căng cơ, khó ngủ hoặc lo lắng về một số tình huống. Hãy thử kỹ thuật hít thở, viết nhật ký, phân bổ thời gian – nghỉ ngơi hợp lý và trao đổi với người đáng tin cậy. Nếu kéo dài trên vài tuần hoặc ảnh hưởng sinh hoạt, nên gặp chuyên gia.",
       "color": "text-yellow-600"
     },
     {
       "range": [51, 60],
       "level": "Lo âu mức độ vừa",
+      "needHelpFromPsychologist": false,
       "description": "Lo âu bắt đầu ảnh hưởng rõ rệt tới công việc/học tập hoặc các mối quan hệ; có thể kèm theo khó tập trung, dễ cáu gắt, né tránh. Bạn nên cân nhắc trị liệu tâm lý (ví dụ CBT), đồng thời điều chỉnh lối sống (vận động, giấc ngủ đều) để giảm triệu chứng.",
       "color": "text-orange-600"
     },
     {
       "range": [61, 70],
       "level": "Lo âu mức độ nặng",
+      "needHelpFromPsychologist": true,
       "description": "Cảm giác căng thẳng thường xuyên, lo âu lan tỏa, có thể xuất hiện triệu chứng cơ thể (đánh trống ngực, khó thở, đau tức). Hãy sớm gặp chuyên gia để được đánh giá và lên kế hoạch hỗ trợ phù hợp; có thể kết hợp trị liệu và hướng dẫn kỹ thuật đối phó (ví dụ kỹ thuật tiếp đất).",
       "color": "text-red-600"
     },
     {
       "range": [71, 80],
       "level": "Lo âu mức độ rất nặng",
+      "needHelpFromPsychologist": true,
       "description": "Mức lo âu rất cao, có thể kèm theo cơn hoảng sợ hoặc né tránh mạnh. Khuyến nghị tìm hỗ trợ chuyên môn ngay để được can thiệp kịp thời. Nếu cảm thấy không an toàn hoặc có ý nghĩ tự hại, hãy liên hệ dịch vụ khẩn cấp/đường dây nóng lập tức.",
       "color": "text-red-600"
     }

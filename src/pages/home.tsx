@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useIonRouter } from "@ionic/react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { MessageSquare, BookOpen, FileText, Plus } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { ROUTE_PATHS } from "@/lib/constant";
@@ -9,7 +8,6 @@ import QuickStats from "@/components/home/quick-stats";
 import TodayJournal from "@/components/home/today-journal";
 import RecentChats from "@/components/home/recent-chats";
 import RecommendedAssessments from "@/components/home/recommended-assessments";
-import LatestResult from "@/components/home/latest-result";
 import { fetchChatSessions, getChatStats } from "@/redux/slices/chat";
 import { fetchJournals } from "@/redux/slices/journal";
 import { fetchMyResults } from "@/redux/slices/result";
@@ -22,9 +20,9 @@ export default function HomePage() {
 
   useEffect(() => {
     // Fetch all data needed for the dashboard
-    dispatch(fetchChatSessions());
+    dispatch(fetchChatSessions({}));
     dispatch(getChatStats());
-    dispatch(fetchJournals({ page: 1, limit: 50 }));
+    dispatch(fetchJournals({ limit: 50 }));
     dispatch(fetchMyResults({ page: 1, limit: 50 }));
     dispatch(fetchQuizzes({ page: 1, limit: 50 }));
   }, [dispatch]);
@@ -77,9 +75,6 @@ export default function HomePage() {
 
       {/* Recent Chats */}
       <RecentChats />
-
-      {/* Latest Result */}
-      <LatestResult />
 
       {/* Recommended Assessments */}
       <RecommendedAssessments />

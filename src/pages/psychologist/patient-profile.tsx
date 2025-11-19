@@ -24,6 +24,8 @@ import {
   Plus,
   Calendar,
   Target,
+  Loader2,
+  Trash2,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
@@ -37,6 +39,18 @@ import {
 } from "@/redux/slices/psychologist";
 import {  TreatmentPlanStatus } from "@/@types/psychologist";
 import dayjs from "dayjs";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { noteSchema, treatmentPlanSchema, NoteFormValues, TreatmentPlanFormValues } from "@/lib/validations/psychologist";
+import { useToast } from "@/components/ui/toast";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function PatientProfile() {
   const { patientId } = useParams<{ patientId: string }>();
@@ -44,17 +58,31 @@ export default function PatientProfile() {
   const dispatch = useAppDispatch();
   const { patients, currentPatientNotes, currentPatientPlans, isLoading } =
     useAppSelector((state) => state.psychologist);
+  const { success, error: toastError } = useToast();
 
   const [showNoteDialog, setShowNoteDialog] = useState(false);
   const [showPlanDialog, setShowPlanDialog] = useState(false);
-  const [noteContent, setNoteContent] = useState("");
-  const [planForm, setPlanForm] = useState({
-    title: "",
-    description: "",
-    goals: [""],
-    tasks: [""],
-    startDate: "",
-    endDate: "",
+
+  // Note form
+  const noteForm = useForm<NoteFormValues>({
+    resolver: zodResolver(noteSchema),
+    defaultValues: {
+      content: "",
+      isPrivate: true,
+    },
+  });
+
+  // Plan form
+  const planForm = useForm<TreatmentPlanFormValues>({
+    resolver: zodResolver(treatmentPlanSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      goals: "",
+      tasks: "",
+      startDate: "",
+      endDate: "",
+    },
   });
 
   const patient = patients.find((p) => p.patientId === parseInt(patientId || "0"));
@@ -73,49 +101,54 @@ export default function PatientProfile() {
     };
   }, [patientId, dispatch]);
 
-  const handleCreateNote = async () => {
-    if (!noteContent.trim() || !patientId) return;
+  const handleCreateNote = async (data: NoteFormValues) => {
+    if (!patientId) return;
 
     try {
       await dispatch(
         createNote({
           patientId: parseInt(patientId),
-          content: noteContent,
-          isPrivate: true,
+          content: data.content,
+          isPrivate: data.isPrivate ?? true,
         })
       ).unwrap();
-      setNoteContent("");
+      success({ title: "Ghi chú đã được tạo thành công" });
+      noteForm.reset();
       setShowNoteDialog(false);
-    } catch (error) {
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi tạo ghi chú");
       console.error("Failed to create note:", error);
     }
   };
 
-  const handleCreatePlan = async () => {
-    if (!planForm.title.trim() || !patientId) return;
+  const handleCreatePlan = async (data: TreatmentPlanFormValues) => {
+    if (!patientId) return;
 
     try {
+      // Parse goals and tasks from string to array
+      const goals = data.goals
+        ? data.goals.split("\n").filter((g) => g.trim())
+        : [];
+      const tasks = data.tasks
+        ? data.tasks.split("\n").filter((t) => t.trim())
+        : [];
+
       await dispatch(
         createPlan({
           patientId: parseInt(patientId),
-          title: planForm.title,
-          description: planForm.description,
-          goals: planForm.goals.filter((g) => g.trim()),
-          tasks: planForm.tasks.filter((t) => t.trim()),
-          startDate: planForm.startDate,
-          endDate: planForm.endDate,
+          title: data.title,
+          description: data.description || "",
+          goals,
+          tasks,
+          startDate: data.startDate || "",
+          endDate: data.endDate || "",
         })
       ).unwrap();
-      setPlanForm({
-        title: "",
-        description: "",
-        goals: [""],
-        tasks: [""],
-        startDate: "",
-        endDate: "",
-      });
+      success({ title: "Kế hoạch điều trị đã được tạo thành công" });
+      planForm.reset();
       setShowPlanDialog(false);
-    } catch (error) {
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi tạo kế hoạch");
       console.error("Failed to create plan:", error);
     }
   };
@@ -128,29 +161,11 @@ export default function PatientProfile() {
           data: { status: TreatmentPlanStatus.COMPLETED },
         })
       ).unwrap();
-    } catch (error) {
+      success({ title: "Kế hoạch đã được đánh dấu hoàn thành" });
+    } catch (error: any) {
+      toastError(error.message || "Lỗi khi cập nhật kế hoạch");
       console.error("Failed to update plan:", error);
     }
-  };
-
-  const addGoal = () => {
-    setPlanForm((prev) => ({ ...prev, goals: [...prev.goals, ""] }));
-  };
-
-  const addTask = () => {
-    setPlanForm((prev) => ({ ...prev, tasks: [...prev.tasks, ""] }));
-  };
-
-  const updateGoal = (index: number, value: string) => {
-    const newGoals = [...planForm.goals];
-    newGoals[index] = value;
-    setPlanForm((prev) => ({ ...prev, goals: newGoals }));
-  };
-
-  const updateTask = (index: number, value: string) => {
-    const newTasks = [...planForm.tasks];
-    newTasks[index] = value;
-    setPlanForm((prev) => ({ ...prev, tasks: newTasks }));
   };
 
   if (!patient) {
@@ -382,20 +397,41 @@ export default function PatientProfile() {
               Ghi chú riêng tư cho bệnh nhân {patient.patient?.name}
             </DialogDescription>
           </DialogHeader>
-          <Textarea
-            value={noteContent}
-            onChange={(e) => setNoteContent(e.target.value)}
-            placeholder="Nhập ghi chú..."
-            rows={6}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNoteDialog(false)}>
-              Hủy
-            </Button>
-            <Button onClick={handleCreateNote} disabled={!noteContent.trim() || isLoading}>
-              Lưu ghi chú
-            </Button>
-          </DialogFooter>
+          <Form {...noteForm}>
+            <form onSubmit={noteForm.handleSubmit(handleCreateNote)} className="space-y-4">
+              <FormField
+                control={noteForm.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Nhập ghi chú..."
+                        rows={6}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowNoteDialog(false)}
+                  disabled={isLoading}
+                >
+                  Hủy
+                </Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Lưu ghi chú
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
@@ -408,91 +444,136 @@ export default function PatientProfile() {
               Kế hoạch điều trị cho bệnh nhân {patient.patient?.name}
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>Tiêu đề *</Label>
-              <Input
-                value={planForm.title}
-                onChange={(e) => setPlanForm((prev) => ({ ...prev, title: e.target.value }))}
-                placeholder="Ví dụ: Kế hoạch giảm căng thẳng"
+          <Form {...planForm}>
+            <form onSubmit={planForm.handleSubmit(handleCreatePlan)} className="space-y-4">
+              <FormField
+                control={planForm.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tiêu đề *</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Ví dụ: Kế hoạch giảm căng thẳng"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div>
-              <Label>Mô tả</Label>
-              <Textarea
-                value={planForm.description}
-                onChange={(e) =>
-                  setPlanForm((prev) => ({ ...prev, description: e.target.value }))
-                }
-                placeholder="Mô tả chi tiết về kế hoạch..."
-                rows={3}
+
+              <FormField
+                control={planForm.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mô tả</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Mô tả chi tiết về kế hoạch..."
+                        rows={3}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Ngày bắt đầu</Label>
-                <Input
-                  type="date"
-                  value={planForm.startDate}
-                  onChange={(e) =>
-                    setPlanForm((prev) => ({ ...prev, startDate: e.target.value }))
-                  }
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={planForm.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ngày bắt đầu</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="date"
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={planForm.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ngày kết thúc</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="date"
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-              <div>
-                <Label>Ngày kết thúc</Label>
-                <Input
-                  type="date"
-                  value={planForm.endDate}
-                  onChange={(e) => setPlanForm((prev) => ({ ...prev, endDate: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <Label>Mục tiêu</Label>
-                <Button variant="outline" size="sm" onClick={addGoal}>
-                  <Plus className="h-3 w-3" />
+
+              <FormField
+                control={planForm.control}
+                name="goals"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mục tiêu (một dòng cho mỗi mục tiêu)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Nhập mục tiêu, mỗi mục tiêu trên một dòng..."
+                        rows={3}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={planForm.control}
+                name="tasks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nhiệm vụ (một dòng cho mỗi nhiệm vụ)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Nhập nhiệm vụ, mỗi nhiệm vụ trên một dòng..."
+                        rows={3}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowPlanDialog(false)}
+                  disabled={isLoading}
+                >
+                  Hủy
                 </Button>
-              </div>
-              <div className="space-y-2">
-                {planForm.goals.map((goal, idx) => (
-                  <Input
-                    key={idx}
-                    value={goal}
-                    onChange={(e) => updateGoal(idx, e.target.value)}
-                    placeholder={`Mục tiêu ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <Label>Nhiệm vụ</Label>
-                <Button variant="outline" size="sm" onClick={addTask}>
-                  <Plus className="h-3 w-3" />
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Tạo kế hoạch
                 </Button>
-              </div>
-              <div className="space-y-2">
-                {planForm.tasks.map((task, idx) => (
-                  <Input
-                    key={idx}
-                    value={task}
-                    onChange={(e) => updateTask(idx, e.target.value)}
-                    placeholder={`Nhiệm vụ ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowPlanDialog(false)}>
-              Hủy
-            </Button>
-            <Button onClick={handleCreatePlan} disabled={!planForm.title.trim() || isLoading}>
-              Tạo kế hoạch
-            </Button>
-          </DialogFooter>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

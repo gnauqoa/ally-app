@@ -56,9 +56,9 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (selectedStatus === "all") {
-      dispatch(fetchChatSessions());
+      dispatch(fetchChatSessions({}));
     } else {
-      dispatch(fetchChatSessions(selectedStatus));
+      dispatch(fetchChatSessions({ status: selectedStatus }));
     }
   }, [selectedStatus, dispatch]);
 

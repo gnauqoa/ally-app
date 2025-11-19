@@ -9,6 +9,8 @@ import {
   AlertCircle,
   CheckCircle2,
 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface AnalysisCardProps {
   analysis: JournalAnalysis;
@@ -96,9 +98,11 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ analysis }) => {
         {analysis.aiSummary && (
           <div>
             <p className="text-sm font-medium mb-2">Tóm tắt</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {analysis.aiSummary}
-            </p>
+            <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {analysis.aiSummary}
+              </ReactMarkdown>
+            </div>
           </div>
         )}
 
@@ -128,9 +132,11 @@ const AnalysisCard: React.FC<AnalysisCardProps> = ({ analysis }) => {
               <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <p className="text-sm font-medium">Đề xuất</p>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {analysis.aiRecommendations}
-            </p>
+            <div className="text-sm text-muted-foreground leading-relaxed prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {analysis.aiRecommendations}
+              </ReactMarkdown>
+            </div>
           </div>
         )}
       </CardContent>

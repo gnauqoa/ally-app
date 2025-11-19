@@ -9,19 +9,19 @@
       "range": [13.5, 25],
       "level": "Phong cách học tập chính",
       "description": "Đây là phong cách phù hợp nhất với bạn. Hãy ưu tiên các phương pháp – tài liệu – môi trường học tập tương thích với phong cách này để tối ưu hiệu quả. Đồng thời, duy trì sự linh hoạt để thích nghi khi bối cảnh thay đổi.",
-      "color": "text-green-600"
+      "color": "green-600"
     },
     {
       "range": [11.5, 13.49],
       "level": "Phong cách học tập phụ",
       "description": "Phong cách này vẫn hữu ích trong nhiều tình huống. Hãy sử dụng như phương án bổ trợ: kết hợp một phần phương pháp của phong cách phụ vào kế hoạch học tập để tăng sự đa dạng chiến lược và khả năng thích nghi.",
-      "color": "text-yellow-600"
+      "color": "yellow-600"
     },
     {
       "range": [0, 11.49],
       "level": "Phong cách học tập không đáng kể",
       "description": "Phong cách này có mức phù hợp thấp với bạn, nên chỉ dùng hạn chế. Hãy thử nghiệm các phương pháp khác để tìm ra cách học hiệu quả hơn, tránh gượng ép theo phong cách này gây giảm động lực hoặc hiệu suất.",
-      "color": "text-slate-500"
+      "color": "slate-500"
     }
   ]
 }

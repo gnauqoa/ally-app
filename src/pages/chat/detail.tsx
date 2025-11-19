@@ -39,6 +39,17 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { feedbackSchema, FeedbackFormValues } from "@/lib/validations/feedback";
+import { useToast } from "@/components/ui/toast";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 
 const statusLabels: Record<ChatSessionStatus, string> = {
   [ChatSessionStatus.IN_PROGRESS]: "Đang tiến hành",
@@ -69,18 +80,22 @@ export default function ChatDetail() {
   const dispatch = useAppDispatch();
   const { currentSession, sendMessage, isLoading, isNewChat } =
     useChatSession();
+  const { success, error: toastError } = useToast();
   const [input, setInput] = useState("");
   const [showSummary, setShowSummary] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [feedbackRating, setFeedbackRating] = useState(5);
-  const [feelingBetter, setFeelingBetter] = useState<boolean | undefined>(
-    undefined
-  );
-  const [feedbackComment, setFeedbackComment] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
   const [generatingSummary, setGeneratingSummary] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messages = currentSession?.messages || ([] as ChatMessageType[]);
+
+  const feedbackForm = useForm<FeedbackFormValues>({
+    resolver: zodResolver(feedbackSchema),
+    defaultValues: {
+      emotion: "satisfied",
+      feedback: "",
+    },
+  });
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,24 +141,34 @@ export default function ChatDetail() {
     }
   };
 
-  const handleSubmitFeedback = async () => {
+  const handleSubmitFeedback = async (data: FeedbackFormValues) => {
     if (!currentSession?.id) return;
     try {
+      // Map emotion to rating (rough scale)
+      const emotionToRating: Record<string, number> = {
+        very_satisfied: 10,
+        satisfied: 7,
+        neutral: 5,
+        unsatisfied: 3,
+        very_unsatisfied: 1,
+      };
+
       await dispatch(
         addEmotionalFeedback({
           sessionId: currentSession.id,
           data: {
-            rating: feedbackRating,
-            feelingBetter,
-            comment: feedbackComment,
+            rating: emotionToRating[data.emotion],
+            feelingBetter:
+              data.emotion === "very_satisfied" || data.emotion === "satisfied",
+            comment: data.feedback || "",
           },
         })
       ).unwrap();
+      success({ title: "Cảm ơn bạn đã để lại đánh giá!" });
       setShowFeedback(false);
-      setFeedbackRating(5);
-      setFeelingBetter(undefined);
-      setFeedbackComment("");
+      feedbackForm.reset();
     } catch (error) {
+      toastError({ title: "Lỗi khi gửi đánh giá" });
       console.error("Failed to submit feedback:", error);
     }
   };
@@ -152,14 +177,15 @@ export default function ChatDetail() {
     <div className="flex h-full flex-col bg-background relative">
       {/* Header with metadata and actions */}
       {!isNewChat && currentSession && (
-        <div className="border-b bg-card px-4 py-3 space-y-2">
+        <div className="border-b bg-card px-3 py-2 space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-wrap flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap flex-1 min-w-0">
               {currentSession.status && (
                 <Badge
                   variant={
                     statusVariants[currentSession.status as ChatSessionStatus]
                   }
+                  className="text-xs"
                 >
                   {statusLabels[currentSession.status as ChatSessionStatus]}
                 </Badge>
@@ -169,22 +195,24 @@ export default function ChatDetail() {
                   variant={
                     priorityVariants[currentSession.metadata.priorityLevel]
                   }
+                  className="text-xs"
                 >
                   {currentSession.metadata.priorityLevel}
                 </Badge>
               )}
               {currentSession.metadata?.problemCategory && (
-                <Badge variant="outline">
+                <Badge variant="outline" className="text-xs hidden sm:inline-flex">
                   {currentSession.metadata.problemCategory}
                 </Badge>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1 flex-shrink-0">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
                     onClick={handleAnalyze}
                     disabled={analyzing}
                   >
@@ -195,13 +223,14 @@ export default function ChatDetail() {
                     )}
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Phân tích cuộc trò chuyện</TooltipContent>
+                <TooltipContent>Phân tích</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
                     onClick={handleGenerateSummary}
                     disabled={generatingSummary}
                   >
@@ -212,26 +241,27 @@ export default function ChatDetail() {
                     )}
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Tạo tóm tắt cuộc trò chuyện</TooltipContent>
+                <TooltipContent>Tóm tắt</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
                     onClick={() => setShowFeedback(true)}
                   >
                     <Heart className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>Đánh giá cuộc trò chuyện</TooltipContent>
+                <TooltipContent>Đánh giá</TooltipContent>
               </Tooltip>
             </div>
           </div>
           {currentSession.metadata?.needsSpecialist && (
-            <div className="flex items-center gap-2 text-sm text-destructive">
-              <AlertCircle className="h-4 w-4" />
-              <span>Cần hỗ trợ từ chuyên gia</span>
+            <div className="flex items-center gap-2 text-xs text-destructive">
+              <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+              <span className="truncate">Cần hỗ trợ từ chuyên gia</span>
             </div>
           )}
         </div>
@@ -318,59 +348,101 @@ export default function ChatDetail() {
               Chia sẻ cảm nhận của bạn về cuộc trò chuyện này
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Đánh giá (1-10)</Label>
-              <div className="flex gap-2">
-                {[...Array(10)].map((_, i) => (
-                  <Button
-                    key={i}
-                    variant={feedbackRating === i + 1 ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFeedbackRating(i + 1)}
-                  >
-                    {i + 1}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label>Bạn có cảm thấy tốt hơn không?</Label>
-              <div className="flex gap-2">
-                <Button
-                  variant={feelingBetter === true ? "default" : "outline"}
-                  onClick={() => setFeelingBetter(true)}
-                  className="flex-1"
-                >
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Có
-                </Button>
-                <Button
-                  variant={feelingBetter === false ? "default" : "outline"}
-                  onClick={() => setFeelingBetter(false)}
-                  className="flex-1"
-                >
-                  <XCircle className="mr-2 h-4 w-4" />
-                  Không
-                </Button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label>Nhận xét (tùy chọn)</Label>
-              <Textarea
-                value={feedbackComment}
-                onChange={(e) => setFeedbackComment(e.target.value)}
-                placeholder="Chia sẻ thêm về trải nghiệm của bạn..."
-                rows={4}
+          <Form {...feedbackForm}>
+            <form
+              onSubmit={feedbackForm.handleSubmit(handleSubmitFeedback)}
+              className="space-y-4"
+            >
+              <FormField
+                control={feedbackForm.control}
+                name="emotion"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cảm xúc của bạn</FormLabel>
+                    <FormControl>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant={
+                            field.value === "very_satisfied"
+                              ? "default"
+                              : "outline"
+                          }
+                          size="sm"
+                          onClick={() => field.onChange("very_satisfied")}
+                        >
+                          <CheckCircle className="mr-1 h-4 w-4" />
+                          Rất tốt
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={
+                            field.value === "satisfied" ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => field.onChange("satisfied")}
+                        >
+                          <CheckCircle className="mr-1 h-4 w-4" />
+                          Tốt
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={
+                            field.value === "neutral" ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => field.onChange("neutral")}
+                        >
+                          Trung bình
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={
+                            field.value === "unsatisfied"
+                              ? "default"
+                              : "outline"
+                          }
+                          size="sm"
+                          onClick={() => field.onChange("unsatisfied")}
+                        >
+                          <XCircle className="mr-1 h-4 w-4" />
+                          Không tốt
+                        </Button>
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
               />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowFeedback(false)}>
-              Hủy
-            </Button>
-            <Button onClick={handleSubmitFeedback}>Gửi đánh giá</Button>
-          </DialogFooter>
+
+              <FormField
+                control={feedbackForm.control}
+                name="feedback"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nhận xét (tùy chọn)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Chia sẻ thêm về trải nghiệm của bạn..."
+                        rows={4}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowFeedback(false)}
+                >
+                  Hủy
+                </Button>
+                <Button type="submit">Gửi đánh giá</Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

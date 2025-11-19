@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Journal } from '@/@types/journal';
+import { Journal, Sentiment } from '@/@types/journal';
 import EmotionDot from './emotion-dot';
 import dayjs from 'dayjs';
 import { Button } from '@/components/ui/button';
@@ -64,7 +64,13 @@ const JournalCalendar: React.FC<JournalCalendarProps> = ({
 
   const handleDateClick = (date: Date) => {
     const dateStr = dayjs(date).format('YYYY-MM-DD');
-    onDateClick(dateStr);
+    const isFuture = dayjs(date).isAfter(dayjs(), 'day');
+    const hasJournal = journalsByDate.has(dateStr);
+    const isClickable = !isFuture && (isToday(date) || hasJournal);
+    
+    if (isClickable) {
+      onDateClick(dateStr);
+    }
   };
 
   return (
@@ -108,23 +114,29 @@ const JournalCalendar: React.FC<JournalCalendarProps> = ({
             const dateStr = dayjs(date).format('YYYY-MM-DD');
             const journal = journalsByDate.get(dateStr);
             const today = isToday(date);
+            const isFuture = dayjs(date).isAfter(dayjs(), 'day');
+            const hasJournal = journalsByDate.has(dateStr);
+            const isClickable = !isFuture && (today || hasJournal);
 
             return (
               <button
                 key={dateStr}
                 onClick={() => handleDateClick(date)}
+                disabled={!isClickable}
                 className={`
                   aspect-square rounded-lg flex flex-col items-center justify-center
                   transition-colors relative
-                  ${today ? 'bg-primary/10 border-2 border-primary' : ''}
-                  ${journal ? 'hover:bg-muted' : 'hover:bg-muted/50'}
+                  ${today ? 'bg-primary/10 border-2 border-primary' : journal ? 'bg-blue-50 dark:bg-blue-900/20' : ''}
+                  ${isClickable ? 'hover:bg-muted' : 'opacity-50 cursor-not-allowed'}
                 `}
               >
                 <span
                   className={`text-sm ${
                     today
                       ? 'text-primary font-bold'
-                      : 'text-foreground'
+                      : journal 
+                        ? 'font-semibold text-foreground'
+                        : 'text-foreground'
                   }`}
                 >
                   {date.getDate()}
@@ -144,15 +156,15 @@ const JournalCalendar: React.FC<JournalCalendarProps> = ({
         <div className="mt-4 pt-4 border-t">
           <div className="flex items-center justify-center gap-4 text-xs">
             <div className="flex items-center gap-1">
-              <EmotionDot sentiment="POSITIVE" size="sm" />
+              <EmotionDot sentiment={Sentiment.POSITIVE} size="sm" />
               <span className="text-muted-foreground">Tích cực</span>
             </div>
             <div className="flex items-center gap-1">
-              <EmotionDot sentiment="NEUTRAL" size="sm" />
+              <EmotionDot sentiment={Sentiment.NEUTRAL} size="sm" />
               <span className="text-muted-foreground">Bình thường</span>
             </div>
             <div className="flex items-center gap-1">
-              <EmotionDot sentiment="NEGATIVE" size="sm" />
+              <EmotionDot sentiment={Sentiment.NEGATIVE} size="sm" />
               <span className="text-muted-foreground">Tiêu cực</span>
             </div>
           </div>

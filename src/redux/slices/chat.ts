@@ -13,7 +13,11 @@ import {
   getChatStats as getChatStatsApi,
 } from "@/apis/chat";
 import { ChatMessageRole, ChatSession } from "@/@types/chat";
-import { ChatSessionStatus, ChatStats, EmotionalFeedback } from "@/@types/consultation";
+import {
+  ChatSessionStatus,
+  ChatStats,
+  EmotionalFeedback,
+} from "@/@types/consultation";
 import { aiClient } from "@/lib/ai";
 import { Chat } from "@google/genai";
 import { RootState } from "..";
@@ -56,7 +60,7 @@ export const updateChatSession = createAsyncThunk(
 
 export const fetchChatSessions = createAsyncThunk(
   "chat/fetchChatSessions",
-  async (status?: ChatSessionStatus, { rejectWithValue }) => {
+  async ({ status }: { status?: ChatSessionStatus } = {}, { rejectWithValue }) => {
     try {
       const res = await getChatSessionsApi(status);
       return res.data.data;
