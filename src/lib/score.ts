@@ -9,16 +9,16 @@ import GRIT from "@/assets/score/GRIT.json";
 import REID from "@/assets/score/REID1984.json";
 import DASS21 from "@/assets/score/DASS21.json";
 import HOLLAND from "@/assets/score/HOLLAND.json";
-import { ResultJson } from "@/@types/result";
+import { Result, ResultJson } from "@/@types/result";
 
-export const QUIZ_CODES = {
-  BDI: "BDI",
-  ZUNG: "ZUNG",
-  GRIT: "GRIT",
-  REID1984: "REID1984",
-  DASS21: "DASS21",
-  HOLLAND: "HOLLAND",
-};
+export enum QUIZ_CODES {
+  BDI = "BDI",
+  ZUNG = "ZUNG",
+  GRIT = "GRIT",
+  REID1984 = "REID1984",
+  DASS21 = "DASS21",
+  HOLLAND = "HOLLAND",
+}
 
 const SCORE_INTERPRETATIONS = {
   [QUIZ_CODES.BDI]: BDI,
@@ -30,9 +30,9 @@ export const getInterpretation = (
   score: number,
   code: string
 ): ScoreInterpretation => {
-  const scoreInterpretation = SCORE_INTERPRETATIONS[
-    code as keyof typeof SCORE_INTERPRETATIONS
-  ].results.find((result) => {
+  const interpretationSource =
+    SCORE_INTERPRETATIONS[code as keyof typeof SCORE_INTERPRETATIONS];
+  const scoreInterpretation = interpretationSource?.results.find((result) => {
     return score >= result.range[0] && score <= result.range[1];
   }) ?? {
     level: "",
@@ -103,6 +103,7 @@ export const calculateDASS21Subscales = (
   return {
     depression: {
       name: "Trầm cảm",
+      color: getColorForLevel(depressionInterpretation.level),
       label: depressionInterpretation.label,
       level: depressionInterpretation.level,
       score: rawScores.depression,
@@ -113,6 +114,7 @@ export const calculateDASS21Subscales = (
     },
     anxiety: {
       name: "Lo âu",
+      color: getColorForLevel(anxietyInterpretation.level),
       label: anxietyInterpretation.label,
       level: anxietyInterpretation.level,
       score: rawScores.anxiety,
@@ -122,6 +124,7 @@ export const calculateDASS21Subscales = (
     },
     stress: {
       name: "Căng thẳng",
+      color: getColorForLevel(stressInterpretation.level),
       label: stressInterpretation.label,
       level: stressInterpretation.level,
       score: rawScores.stress,
@@ -328,4 +331,34 @@ export const calculateReidSubscales = (
     .sort((a, b) => b.score - a.score);
 
   return subscales;
+};
+
+export const getNormalResultBadgeMeta = (
+  quizCode: QUIZ_CODES,
+  result: Result
+): any => {
+  switch (quizCode) {
+    case QUIZ_CODES.BDI: {
+      const interpretation = getInterpretation(
+        result.totalScore,
+        QUIZ_CODES.BDI
+      );
+      return {
+        label: interpretation.level,
+        color: interpretation.color,
+        progress: Math.round((result.totalScore / (BDI.maxScore ?? 0)) * 100),
+      };
+    }
+    default: {
+      const interpretation = getInterpretation(
+        result.totalScore,
+        QUIZ_CODES.ZUNG
+      );
+      return {
+        label: interpretation.level,
+        color: interpretation.color,
+        progress: Math.round((result.totalScore / (ZUNG.maxScore ?? 0)) * 100),
+      };
+    }
+  }
 };

@@ -28,6 +28,7 @@ export type DASS21SubscaleResult = {
   depression: {
     name: string;
     label: string;
+    color: string;
     level: string;
     score: number;
     description: string;
@@ -37,6 +38,7 @@ export type DASS21SubscaleResult = {
   anxiety: {
     name: string;
     label: string;
+    color: string;
     level: string;
     score: number;
     description: string;
@@ -46,6 +48,7 @@ export type DASS21SubscaleResult = {
   stress: {
     name: string;
     label: string;
+    color: string;
     level: string;
     score: number;
     description: string;

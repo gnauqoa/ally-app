@@ -1,21 +1,24 @@
-import { Result, ResultJson } from "@/@types/result";
-import { Card } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { ChevronRight } from "lucide-react";
-import {
-  getInterpretation,
-  calculateDASS21Subscales,
-  calculateGritSubscales,
-  calculateHollandDimensions,
-  calculateReidSubscales,
-} from "@/lib/score";
-import dayjs from "dayjs";
-import { stringToColor } from "@/lib/utils";
-import { useIonRouter } from "@ionic/react";
-import { useMemo } from "react";
+import { Result } from "@/@types/result";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import ResultBadge from "./quiz/result-badge";
 
 const ResultHistoryItem = ({ result }: { result: Result }) => {
-  return <></>;
+  const { quiz } = result;
+  return (
+    <Card
+      className="gap-0 py-4 hover:bg-accent/80 cursor-pointer"
+    >
+      <CardHeader className="px-4">
+        <div className="flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">{quiz?.code}</p>
+          <CardTitle> {quiz?.name} </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent className="px-4 pt-4">
+        <ResultBadge result={result} code={quiz?.code || ""} />
+      </CardContent>
+    </Card>
+  );
 };
 
 export default ResultHistoryItem;
