@@ -75,7 +75,10 @@ export const requestConnection = createAsyncThunk(
 export const updateConnection = createAsyncThunk(
   "patientPsychologist/updateStatus",
   async (
-    { relationshipId, status }: { relationshipId: number; status: RelationshipStatus },
+    {
+      relationshipId,
+      status,
+    }: { relationshipId: number; status: RelationshipStatus },
     { rejectWithValue }
   ) => {
     try {
@@ -202,8 +205,9 @@ const patientPsychologistSlice = createSlice({
         const index = state.myPsychologists.findIndex(
           (p) => p.id === action.payload.id
         );
+
         if (index !== -1) {
-          state.myPsychologists[index] = action.payload;
+          state.myPsychologists[index].permission = action.payload;
         }
       })
       .addCase(updateDataPermissions.rejected, (state, action) => {
@@ -215,4 +219,3 @@ const patientPsychologistSlice = createSlice({
 
 export const { clearError, setSearchQuery } = patientPsychologistSlice.actions;
 export default patientPsychologistSlice.reducer;
-

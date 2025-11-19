@@ -1,13 +1,15 @@
+import { User } from "./auth";
+
 export enum RelationshipStatus {
-  PENDING = 'PENDING',
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE'
+  PENDING = "PENDING",
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
 }
 
 export enum TreatmentPlanStatus {
-  ACTIVE = 'ACTIVE',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
+  ACTIVE = "ACTIVE",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }
 
 export interface Psychologist {
@@ -21,6 +23,7 @@ export interface Psychologist {
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  patientRelationships?: PatientPsychologist[];
   user?: {
     id: number;
     name?: string;
@@ -50,14 +53,7 @@ export interface PatientPsychologist {
   createdAt: string;
   updatedAt: string;
   psychologist?: Psychologist;
-  patient?: {
-    id: number;
-    name?: string;
-    email: string;
-    gender?: string;
-    birthYear?: number;
-    profileImage?: string;
-  };
+  patient?: User;
   permission?: PatientPermission;
 }
 
@@ -85,4 +81,3 @@ export interface TreatmentPlan {
   createdAt: string;
   updatedAt: string;
 }
-

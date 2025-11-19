@@ -29,7 +29,10 @@ const statusLabels: Record<RelationshipStatus, string> = {
   [RelationshipStatus.INACTIVE]: "Không hoạt động",
 };
 
-const statusVariants: Record<RelationshipStatus, "warning" | "success" | "default"> = {
+const statusVariants: Record<
+  RelationshipStatus,
+  "warning" | "success" | "default"
+> = {
   [RelationshipStatus.PENDING]: "warning",
   [RelationshipStatus.ACTIVE]: "success",
   [RelationshipStatus.INACTIVE]: "default",
@@ -41,7 +44,9 @@ export default function MyPsychologist() {
     (state) => state.patientPsychologist
   );
   const { success, error: toastError } = useToast();
-  const [selectedRelationship, setSelectedRelationship] = useState<number | null>(null);
+  const [selectedRelationship, setSelectedRelationship] = useState<
+    number | null
+  >(null);
   const [permissions, setPermissions] = useState({
     canViewJournals: false,
     canViewChats: false,
@@ -75,7 +80,7 @@ export default function MyPsychologist() {
           relationshipId: selectedRelationship,
           permissions,
         })
-      ).unwrap();
+      );
       success({ title: "Đã lưu thay đổi quyền truy cập" });
       setSelectedRelationship(null);
     } catch (error: any) {
@@ -110,7 +115,9 @@ export default function MyPsychologist() {
 
         {/* Psychologists List */}
         {isLoading ? (
-          <div className="text-center text-muted-foreground py-8">Đang tải...</div>
+          <div className="text-center text-muted-foreground py-8">
+            Đang tải...
+          </div>
         ) : myPsychologists.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
@@ -129,7 +136,9 @@ export default function MyPsychologist() {
                     <div className="flex items-start gap-4">
                       <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span className="text-2xl font-semibold text-primary">
-                          {rel.psychologist?.user?.name?.charAt(0).toUpperCase() || "?"}
+                          {rel.psychologist?.user?.name
+                            ?.charAt(0)
+                            .toUpperCase() || "?"}
                         </span>
                       </div>
                       <div>
@@ -246,7 +255,10 @@ export default function MyPsychologist() {
                 id="journals"
                 checked={permissions.canViewJournals}
                 onCheckedChange={(checked) =>
-                  setPermissions((prev) => ({ ...prev, canViewJournals: checked }))
+                  setPermissions((prev) => ({
+                    ...prev,
+                    canViewJournals: checked,
+                  }))
                 }
               />
             </div>
@@ -280,7 +292,10 @@ export default function MyPsychologist() {
                 id="assessments"
                 checked={permissions.canViewAssessments}
                 onCheckedChange={(checked) =>
-                  setPermissions((prev) => ({ ...prev, canViewAssessments: checked }))
+                  setPermissions((prev) => ({
+                    ...prev,
+                    canViewAssessments: checked,
+                  }))
                 }
               />
             </div>
@@ -302,8 +317,11 @@ export default function MyPsychologist() {
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setSelectedRelationship(null)}>
+          <DialogFooter className="flex flex-col gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setSelectedRelationship(null)}
+            >
               Hủy
             </Button>
             <Button onClick={handleSavePermissions} disabled={isLoading}>
@@ -315,4 +333,3 @@ export default function MyPsychologist() {
     </div>
   );
 }
-

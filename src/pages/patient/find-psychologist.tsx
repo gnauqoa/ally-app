@@ -6,13 +6,18 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search, UserPlus, CheckCircle2, Award } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { searchForPsychologists, requestConnection } from "@/redux/slices/patient-psychologist";
+import {
+  searchForPsychologists,
+  requestConnection,
+} from "@/redux/slices/patient-psychologist";
 import { useToast } from "@/components/ui/toast";
 
 export default function FindPsychologist() {
   const router = useIonRouter();
   const dispatch = useAppDispatch();
-  const { psychologists, isLoading } = useAppSelector((state) => state.patientPsychologist);
+  const { psychologists, isLoading } = useAppSelector(
+    (state) => state.patientPsychologist
+  );
   const { success, error: toastError } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [requestingId, setRequestingId] = useState<number | null>(null);
@@ -28,7 +33,7 @@ export default function FindPsychologist() {
   const handleConnect = async (psychologistId: number) => {
     setRequestingId(psychologistId);
     try {
-      await dispatch(requestConnection(psychologistId)).unwrap();
+      await dispatch(requestConnection(psychologistId));
       success({ title: "Đã gửi yêu cầu kết nối" });
     } catch (error: any) {
       toastError(error.message || "Lỗi khi gửi yêu cầu");
@@ -65,7 +70,9 @@ export default function FindPsychologist() {
 
         {/* Results */}
         {isLoading ? (
-          <div className="text-center text-muted-foreground py-8">Đang tải...</div>
+          <div className="text-center text-muted-foreground py-8">
+            Đang tải...
+          </div>
         ) : psychologists.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
@@ -91,9 +98,14 @@ export default function FindPsychologist() {
                       </div>
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <CardTitle className="text-xl">{psych.user?.name}</CardTitle>
+                          <CardTitle className="text-xl">
+                            {psych.user?.name}
+                          </CardTitle>
                           {psych.verified && (
-                            <Badge variant="success" className="rounded-full p-0 text-lg ml-auto">
+                            <Badge
+                              variant="success"
+                              className="rounded-full p-0 text-lg ml-auto"
+                            >
                               <CheckCircle2 className="h-5 w-5" />
                             </Badge>
                           )}
@@ -127,11 +139,18 @@ export default function FindPsychologist() {
                   )}
                   <Button
                     onClick={() => handleConnect(psych.id)}
-                    disabled={requestingId === psych.id}
+                    disabled={
+                      requestingId === psych.id ||
+                      !!psych.patientRelationships?.length
+                    }
                     className="w-full"
                   >
                     <UserPlus className="h-4 w-4 mr-2" />
-                    {requestingId === psych.id ? "Đang gửi..." : "Gửi yêu cầu kết nối"}
+                    {!!psych.patientRelationships?.length
+                      ? "Đã kết nối"
+                      : requestingId === psych.id
+                      ? "Đang gửi..."
+                      : "Gửi yêu cầu kết nối"}
                   </Button>
                 </CardContent>
               </Card>
@@ -142,4 +161,3 @@ export default function FindPsychologist() {
     </div>
   );
 }
-
